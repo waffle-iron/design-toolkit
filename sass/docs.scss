@@ -13,10 +13,11 @@ $blue: #00f;
 $gray: #ccc;
 
 code {
+  border-radius: $general-border-radius;
   padding: 0;
 
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     letter-spacing: -0.2em;
     content: "\00a0";
   }

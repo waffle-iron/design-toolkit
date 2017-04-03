@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="css/example-styles.css" media="screen" rel="stylesheet" type="text/css">
   <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/header.js"></script>
 </head>
 
@@ -31,10 +32,10 @@
           <form action="" id="email-updates" class="hidden">
             <p class="email-toggle-title">Get the best of
               <br>NYPL in your inbox</p>
-            <fieldset>
+            <div class="nypl-text-field">
               <label for="email-text">Email address</label>
               <input type="text" id="email-text" class="nypl-form-text" value="">
-            </fieldset>
+            </div>
             <input type="button" class="subscribe-button" name="Sign up" value="Sign up">
             <div class="links">
               <a class="inverted" href="#">Subscription center</a>
@@ -235,31 +236,33 @@
         <h1>Get a Library Card</h1>
       </div>
     </div>
+          <form action="">
     <div class="nypl-full-width-wrapper">
       <!-- 1 (form) + 3 (results) example -->
       <div class="nypl-row">
-        <div id="mainContent" class="nypl-column-three-quarters nypl-column-offset-one">
+        <div id="mainContent" class="nypl-column-half nypl-column-offset-one">
           <!-- sample card -->
 
-          <form action="">
+            <div id="step-1">
+            <p class="nypl-progress-indicator">Step 1 of 3</p>
             <h2>Please enter the following information</h2>
-            <fieldset class="nypl-name-fieldset">
-              <span>
+            <fieldset class="nypl-name-field">
+              <div>
                 <label for="first-text">First Name <span class="nypl-required-field">Required</span></label>
                 <input id="first-text" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="last-text">Last Name <span class="nypl-required-field">Required</span></label>
                 <input id="last-text" type="text">
-              </span>
+              </div>
             </fieldset>
 
-            <fieldset class="nypl-date-fieldset">
+            <div class="nypl-date-field">
               <label for="date-of-birth">Date of Birth <span class="nypl-required-field">Required</span></label>
               <input id="date-of-birth" type="text" class="form-text" placeholder="MM/DD/YYYY">
-            </fieldset>
+            </div>
 
-            <fieldset class="nypl-select-fieldset">
+            <fieldset class="nypl-select-field">
               <label for="F045pcode2">Education Level</label>
               <select id="F045pcode2">
                 <option value="-" selected="selected">Select</option>
@@ -272,35 +275,40 @@
               </select>
             </fieldset>
 
-            <fieldset class="nypl-text-fieldset">
+            <fieldset class="nypl-text-field">
               <label for="email">E-Mail</label>
               <input id="email" type="text" class="form-text">
             </fieldset>
 
+            <input type="button" id="step-1_submit" class="nypl-basic-button" value="Continue">
+            </div>
+
+            <div id="step-2">
+            <p class="nypl-progress-indicator">Step 2 of 3</p>
             <h2>Permanent Address</h2>
 
             <fieldset class="nypl-address-fieldset">
-              <span>
-                <label for="street-text">Street (with Unit/Apt. Number) <span class="nypl-required-field">Required</span></label>
+              <div>
+                <label for="street-text">Street and Unit or Apartment Number <span class="nypl-required-field">Required</span></label>
                 <input id="street-text" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="first-text">City <span class="nypl-required-field">Required</span></label>
                 <input id="first-text" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="state-text">State <span class="nypl-required-field">Required</span></label>
                 <input id="state-text" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="post-text">Postal Code <span class="nypl-required-field">Required</span></label>
                 <input id="post-text" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="country-text">Country</label>
                 <input id="country-text" type="text">
-              </span>
-              <span class="nypl-select-fieldset">
+              </div>
+              <div class="nypl-select-field">
                 <label for="borough">Borough/Region</label>
                 <select id="borough">
                   <option value="0" selected="selected">Select</option>
@@ -318,30 +326,36 @@
                   <option value="12">OTHER U.S.</option>
                   <option value="13">INTERNATIONAL</option>
                 </select>
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="phone-text">Telephone <span class="nypl-required-field">Required</span></label>
                 <input id="phone-text" type="text">
-              </span>
-              <span class="nypl-simple-radiobutton">
+              </div>
+              <div class="nypl-simple-radiobutton">
                 <label for="checkbox-optin">
                   <input id="checkbox-optin" type="checkbox" value="1">Yes, I'd like to receive e-communications about NYPL's programs, services, and initiatives.
                 </label>
-              </span>
+              </div>
             </fieldset>
 
+            <button class="nypl-link-button" id="prev-2">Previous</button>
+            <input type="button" id="step-2_submit" class="nypl-basic-button" value="Continue">
+            </div>
+
+            <div id="step-3">
+            <p class="nypl-progress-indicator">Step 3 of 3</p>
             <h2>Local Address (if different)</h2>
 
             <fieldset class="nypl-address-fieldset">
-              <span>
-                <label for="street-text2">Street (with Unit/Apt. Number) <span class="nypl-required-field">Required</span></label>
+              <div>
+                <label for="street-text2">Street and Unit or Apartment Number <span class="nypl-required-field">Required</span></label>
                 <input id="street-text2" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="city-text2">City <span class="nypl-required-field">Required</span></label>
                 <input id="city-text2" type="text">
-              </span>
-              <span class="nypl-select-fieldset">
+              </div>
+              <div class="nypl-select-field">
                 <label for="state1">State</label>
                 <select id="state1">
                   <option value="AL">Alabama</option>
@@ -405,23 +419,27 @@
                   <option value="AP">Armed Forces Pacific</option>
                   <option value="AE">Armed Forces Others</option>
                 </select>
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="post-text2">Postal Code <span class="nypl-required-field">Required</span></label>
                 <input id="post-text2" type="text">
-              </span>
-              <span>
+              </div>
+              <div>
                 <label for="phone-text2">Telephone <span class="nypl-required-field">Required</span></label>
                 <input id="phone-text2" type="text">
-              </span>
+              </div>
             </fieldset>
+            <button class="nypl-link-button" id="prev-3">Previous</button>
+            <input type="submit" id="card-submit-main" class="nypl-basic-button" value="Apply">
+            </div>
 
-          </form>
+
           <!-- end sample card -->
         </div>
       </div>
       <!-- end 1 (form) + 3 (results) example -->
     </div>
+          </form>
   </main>
   <footer role="contentinfo">
     <div class="nypl-full-width-wrapper footer-content">
