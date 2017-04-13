@@ -1,6 +1,39 @@
 var hideTimeout
 
+function onSampleCodeClick (t) {
+  var e, n, i, o, r, s, a;
+  for (e = $(t.target), a = window.getSelection(), a.rangeCount > 0 && a.removeAllRanges(), s = [
+  ], i = 0, o = e.length; i < o; i++) n = e[i],
+  r = document.createRange(),
+  r.selectNode(n),
+  s.push(a.addRange(r));
+  return s
+}
+
 function init() {
+  $("code.html").on("click", onSampleCodeClick)
+  $(".nypl-mobile-refine button").click(function(e){
+    e.preventDefault();
+    var self = $(e.target);
+    var parent = self.parent();
+    if (self.attr("aria-expanded") != "true") {
+      self.attr("aria-expanded", "true");
+      self.text("Hide facets");
+      $(".nypl-search-form").addClass("active")
+      $("#filter-search").focus()
+    } else {
+      self.attr("aria-expanded", "false");
+      self.text("Refine search");
+      $(".nypl-search-form").removeClass("active")
+      $("#mainContent").focus()
+    }
+  })
+  $(".nypl-collapsed").click(function(e){
+    e.preventDefault();
+    var self = $(e.target);
+    self.removeClass("nypl-collapsed")
+    self.off("click")
+  })
   $(".nypl-select-field.hidden").hide();
   $('#date-of-birth').mask('00/00/0000');
   $("#step-2, #step-3").hide();
