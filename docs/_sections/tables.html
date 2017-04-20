@@ -3,6 +3,8 @@ title: Tables and data
 description: Displaying search results and tabular data.
 ---
 
+    <h3 id="basicTable">Basic Tables</h3>
+
     <p>Use tables sparingly, <strong>only for tabular data</strong>. Use the <code>nypl-basic-table</code> class to format a table. All tables should have a <code>thead</code> element with the corresponding headers.</p>
 
     <div class="nypl-toolkit-example">
@@ -75,12 +77,14 @@ description: Displaying search results and tabular data.
     <p>Presents a comma-separated list of search terms or filters along with the number of results. The result count has a special <code>span</code> tag (should be number-formatted e.g.: 1,232). Each applied facet or term has a <code>button</code> element to remove the facet and refresh the search results. the button contains the screen-reader-friendly text inside a <code>span</code> tag.
     </p>
 
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> The main element must include the following attributes when being updated via JavaScript (no page refresh): <code>aria-live="assertive"</code> <code>aria-atomic="true"</code> <code>role="presentation"</code>.</p>
+
     <p>
     <strong>NOTE:</strong> <strong>Avoid adding a space</strong> between the facet and the remove button so that it <strong>won't wrap to the next line</strong>.</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
-<div class="nypl-results-summary">
+<div class="nypl-results-summary" aria-live="assertive" aria-atomic="true" role="presentation">
   <span class="nypl-results-count">1,807</span> resources found for
   <span class="nypl-facet">
     <strong>Young Adult<button><span>Remove Young Adult filter</span></button></strong>
@@ -97,7 +101,7 @@ description: Displaying search results and tabular data.
     </code></pre>
 
     <pre><code class="html">
-&lt;div class=&quot;nypl-results-summary&quot;&gt;
+&lt;div class=&quot;nypl-results-summary&quot; aria-live=&quot;assertive&quot; aria-atomic=&quot;true&quot; role=&quot;presentation&quot;&gt;
   &lt;span class=&quot;nypl-results-count&quot;&gt;1,807&lt;/span&gt; resources found for
   &lt;span class=&quot;nypl-facet&quot;&gt;
     &lt;strong&gt;Young Adult&lt;button&gt;&lt;span&gt;Remove Young Adult filter&lt;/span&gt;&lt;/button&gt;&lt;/strong&gt;
@@ -105,8 +109,7 @@ description: Displaying search results and tabular data.
   &lt;span class=&quot;nypl-facet&quot;&gt;
     &lt;strong&gt;Fiction&lt;button&gt;&lt;span&gt;Remove Fiction filter&lt;/span&gt;&lt;/button&gt;&lt;/strong&gt;
   &lt;/span&gt;.
-&lt;/div&gt;
-    </code></pre>
+&lt;/div&gt;    </code></pre>
 
 
     <h3 id="sorting">Sorting</h3>
@@ -179,17 +182,78 @@ description: Displaying search results and tabular data.
 
     <h3 id="results-nontable">Search results (non-table)</h3>
 
-    <p>Coming soon.</p>
+    <p>Sometimes search results don't accommodate to a consistent structure or it is not useful to present them in table form. In these cases results should be returned in a unordered list (<code>ul</code>) of class <code>nypl-results-list</code>. Each result list item should have the class <code>nypl-results-item</code> and contain:
+      <ul>
+        <li>An <code>h2</code> element that contains a link to the result page.</li>
+        <li><strong>Optional:</strong> A notification of unavailability of the item (if applicable) in a div with class <code>nypl-results-unavailable</code>.</li>
+        <li><strong>Optional:</strong> A definition list (<code>dl</code>) with the most relevant attributes of the result item sorted by importance. Terms that need to be highlighted (for easier scanning of results) should have a class of <code>nypl-results-highlight</code></li>
+      </ul>
+    </p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
-
+<ul class="nypl-results-list">
+  <!-- an item -->
+  <li class="nypl-results-item">
+    <h2><a href="#">The Biography of Example</a></h2>
+    <dl>
+      <dt class="nypl-results-highlight">Material Type</dt>
+      <dd class="nypl-results-highlight">Text</dd>
+      <dt>Author</dt>
+      <dd>Smith, Angela F., 1982-</dd>
+      <dt>Published</dt>
+      <dd>2014</dd>
+    </dl>
+  </li>
+  <!-- another item -->
+  <li class="nypl-results-item">
+    <h2><a href="#">Very Rare Item</a></h2>
+    <div class="nypl-results-unavailable">Currently not available for use</div>
+    <dl>
+      <dt class="nypl-results-highlight">Material Type</dt>
+      <dd class="nypl-results-highlight">Text</dd>
+      <dt>Author</dt>
+      <dd>Casasbuenas Gutiérrez, Margarita, 1915-1997</dd>
+      <dt>Published</dt>
+      <dd>1942</dd>
+    </dl>
+  </li>
+</ul>
     </div>
     <pre><code class="scss">
-
+.nypl-results-list
+.nypl-results-item
+.nypl-results-unavailable
+.nypl-results-highlight
     </code></pre>
     <pre><code class="html">
-
+&lt;ul class=&quot;nypl-results-list&quot;&gt;
+  &lt;!-- an item --&gt;
+  &lt;li class=&quot;nypl-results-item&quot;&gt;
+    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;The Biography of Example&lt;/a&gt;&lt;/h2&gt;
+    &lt;dl&gt;
+      &lt;dt class=&quot;nypl-results-highlight&quot;&gt;Material Type&lt;/dt&gt;
+      &lt;dd class=&quot;nypl-results-highlight&quot;&gt;Text&lt;/dd&gt;
+      &lt;dt&gt;Author&lt;/dt&gt;
+      &lt;dd&gt;Smith, Angela F., 1982-&lt;/dd&gt;
+      &lt;dt&gt;Published&lt;/dt&gt;
+      &lt;dd&gt;2014&lt;/dd&gt;
+    &lt;/dl&gt;
+  &lt;/li&gt;
+  &lt;!-- another item --&gt;
+  &lt;li class=&quot;nypl-results-item&quot;&gt;
+    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;Very Rare Item&lt;/a&gt;&lt;/h2&gt;
+    &lt;div class=&quot;nypl-results-unavailable&quot;&gt;Currently not available for use&lt;/div&gt;
+    &lt;dl&gt;
+      &lt;dt class=&quot;nypl-results-highlight&quot;&gt;Material Type&lt;/dt&gt;
+      &lt;dd class=&quot;nypl-results-highlight&quot;&gt;Text&lt;/dd&gt;
+      &lt;dt&gt;Author&lt;/dt&gt;
+      &lt;dd&gt;Casasbuenas Guti&eacute;rrez, Margarita, 1915-1997&lt;/dd&gt;
+      &lt;dt&gt;Published&lt;/dt&gt;
+      &lt;dd&gt;1942&lt;/dd&gt;
+    &lt;/dl&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
     </code></pre>
 
     <h3 id="pagination">Search results pagination</h3>

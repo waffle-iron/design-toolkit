@@ -62,26 +62,26 @@
     color: $text-color;
   }
 
+  $the-text-color: "";
+  $the-background-color: "";
+
+  @if $hover-background-color != $text-color {
+    // there's custom hover color
+    $the-background-color: $hover-background-color;
+  } @else {
+    $the-background-color: $text-color;
+  }
+
+  @if $hover-text-color != $background-color {
+    // there's custom hover color
+    $the-text-color: $hover-text-color;
+  } @else {
+    $the-text-color: $background-color;
+  }
+
   &:hover,
   &:hover:visited,
   &.active {
-    $the-text-color: "";
-    $the-background-color: "";
-
-    @if $hover-background-color != $text-color {
-      // there's custom hover color
-      $the-background-color: $hover-background-color;
-    } @else {
-      $the-background-color: $text-color;
-    }
-
-    @if $hover-text-color != $background-color {
-      // there's custom hover color
-      $the-text-color: $hover-text-color;
-    } @else {
-      $the-text-color: $background-color;
-    }
-
     border-color: $the-text-color;
     background-color: $the-background-color;
     color: $the-text-color;
@@ -109,15 +109,18 @@
 
   &.disabled,
   &[disabled="disabled"],
+  &[disabled="true"],
   &[disabled],
   &[disabled=true] {
 
     @warn "set universal disabled style";
-    cursor: default;
     background-color: $disabled-color;
+    border-color: $the-background-color;
+    cursor: default;
 
     &:hover {
       background-color: $disabled-color;
+      border-color: $the-background-color;
       color: $text-color;
     }
   }
@@ -130,6 +133,45 @@
     background: $nypl-white;
     border-color: $nypl-blue;
     color: $nypl-blue;
+  }
+}
+
+
+@mixin spinner-button {
+  $bar-color: transparentize($nypl-white, 0.5);
+
+  @keyframes spinner-right {
+    0% {
+      right: -50%;
+    }
+
+    100% {
+      right: -10%;
+    }
+  }
+
+  overflow: hidden;
+  position: relative;
+
+  &.spinning {
+    &::after {
+      animation: spinner-right 1.5s linear infinite;
+      background: -moz-repeating-linear-gradient(to right, $bar-color, $bar-color 1rem, transparent 1.1rem, transparent 2rem, $bar-color 2.1rem);
+      background: repeating-linear-gradient(to right, $bar-color, $bar-color 1rem, transparent 1.1rem, transparent 2rem, $bar-color 2.1rem);
+      content: "";
+      display: block;
+      height: 200%;
+      margin-top: -30%;
+      position: absolute;
+      right: -50%;
+      top: 50%;
+      transform: skewX(-30deg);
+      width: 200%;
+    }
+
+    &:enabled:hover::after {
+      background-color: transparentize($nypl-gray, 0.25);
+    }
   }
 }
 
