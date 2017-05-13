@@ -43,18 +43,31 @@ h4,
 h5,
 h6,
 p {
-  line-height: 1.5;
-  margin-bottom: 0;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
   margin-top: 1.5rem;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
+  max-width: 30em;
+  word-wrap: break-word;
+}
+
 h1 {
-  font-size: 2.6rem;
+  font-size: 2.5rem;
   line-height: 1;
 }
 
 h2 {
   font-size: 1.6rem;
+  line-height: 1.1;
 }
 
 h3 {
@@ -73,7 +86,8 @@ h4 {
   margin: 0;
 }
 
-ul {
+ul,
+ol {
   margin-top: 0;
   padding: 0;
 }
@@ -90,8 +104,8 @@ pre {
 }
 
 code {
-  padding-left: 0.25em;
-  padding-right: 0.25em;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 strong {

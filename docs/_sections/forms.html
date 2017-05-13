@@ -39,7 +39,7 @@ description: Form fields and user input.
 &lt;/fieldset&gt;
     </code></pre>
 
-    <h3 id="textFields">Text fields</h3>
+    <h3 id="textFields">Text Fields</h3>
 
     <p>Text fields can include (but not <em>rely on</em>) a placeholder that provides additional information on the type of input it expects.</p>
 
@@ -61,18 +61,22 @@ description: Form fields and user input.
 &lt;/div&gt;
     </code></pre>
 
-    <h3 id="requiredFields">Required fields</h3>
+    <h3 id="requiredFields">Required Fields</h3>
 
-    <p>Required fields must include a <code>span</code> tag of class <code>nypl-required-field</code> in the label that includes the text “Required”. The field itself should include the <code>required</code> and <code>aria-required</code> attributes. An optional <span>span</span> element with class <code>nypl-field-status</code> can be included after the input field providing a brief message explaining any additional requirements about the field.</p>
+    <p>Required fields must include a <code>span</code> tag of class <code>nypl-required-field</code> in the label that includes the text “Required”. The field itself should include the <code>required</code> and <code>aria-required</code> attributes.</p>
+
+    <p>It is recommended that JavaScript-based validation be made in the <code>onchange</code> event (native to <code>select</code>, <code>input[type=checkbox]</code>, and <code>input[type=radio]</code>, also fired by some frameworks on text <code>blur</code> and submit). Your designer can advise on exceptions to this recommendation if there is a good reason to do otherwise (for example, each time a user types a new letter).</p>
+
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> An optional <span>span</span> element with class <code>nypl-field-status</code> can be included after the input field providing a brief message explaining any additional requirements about the field. If included, the note must include the <code>aria-labelledby="[LABEL_ID] [STATUS_FIELD_ID]"</code>, <code>aria-live="assertive"</code>, and <code>aria-atomic="true"</code> attributes if the form is being validated via client-side JavaScript. The example below shows a simple validation on every key press using jQuery. See <a href="#formValidation">Form Validation</a> for more information.</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
-<div class="nypl-text-field">
-  <label for="required-field">Username
+<div class="nypl-text-field" id="username1">
+  <label for="required-field" id="username1-label">Username
     <span class="nypl-required-field">Required</span>
   </label>
-  <input id="required-field" type="text" required="true" aria-required="true" />
-  <span class="nypl-field-status">Username must only contain letters and numbers</span>
+  <input id="required-field" type="text" required="true" aria-labelledby="username1-label username1-status" aria-required="true" />
+  <span class="nypl-field-status" id="username1-status" aria-live="assertive" aria-atomic="true">Username must only contain letters and numbers.</span>
 </div>
     </div>
 
@@ -80,27 +84,37 @@ description: Form fields and user input.
 .nypl-required-field
     </code></pre>
     <pre><code class="html">
-&lt;div class=&quot;nypl-text-field&quot;&gt;
-  &lt;label for=&quot;required-field&quot;&gt;Username
+&lt;div class=&quot;nypl-text-field&quot; id=&quot;username1&quot;&gt;
+  &lt;label for=&quot;required-field&quot; id=&quot;username1-label&quot;&gt;Username
     &lt;span class=&quot;nypl-required-field&quot;&gt;Required&lt;/span&gt;
   &lt;/label&gt;
-  &lt;input id=&quot;required-field&quot; type=&quot;text&quot; required=&quot;true&quot; aria-required=&quot;true&quot; /&gt;
-  &lt;span class=&quot;nypl-field-status&quot;&gt;Username must only contain letters and numbers&lt;/span&gt;
+  &lt;input id=&quot;required-field&quot; type=&quot;text&quot; required=&quot;true&quot; aria-labelledby=&quot;username1-label username1-status&quot; aria-required=&quot;true&quot; /&gt;
+  &lt;span class=&quot;nypl-field-status&quot; id=&quot;username1-status&quot; aria-live=&quot;assertive&quot; aria-atomic=&quot;true&quot;&gt;Username must only contain letters and numbers.&lt;/span&gt;
 &lt;/div&gt;
     </code></pre>
+    <pre><code class="js">
+$("#username1 #required-field").change(function (e) {
+  var self = $(e.target)
+  var text = self.val()
+  var regex = /\W/g
+  if (text.length > 0 && regex.test(text)) {
+    $("#username1").addClass("nypl-field-error")
+    $("#username1 .nypl-field-status").text("The Username must only contain letters and numbers. Try again.")
+  }
+})
+    </code></pre>
 
-    <h3 id="dateFields">Date fields</h3>
+    <h3 id="dateFields">Date Fields</h3>
 
-    <p>The date field implements a similar structure as the Text Field but uses a date mask that must be enforced via JavaScript. The example below uses <a href="https://github.com/igorescobar/jQuery-Mask-Plugin">jQuery Mask</a>. Server-side validation should still occur since it is more secure.</p>
+    <p>The date field implements a similar structure as the Text Field but uses <code>type="date"</code>. This input type has <a href="http://caniuse.com/#search=date">limited browser support</a> so additional server-side and JavaScript validation should be taken into consideration. Server-side validation should still occur since it is more secure.</p>
 
     <p><strong>Note:</strong> This only applies for dates that will conform to  a year/month/day-style pattern (YYYY/MM/DD, MM/DD/YYYY, etc).</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
 <div class="nypl-date-field">
-  <label for="date-of-birth">Date of Birth <span class="nypl-required-field">Required</span></label>
-  <input id="date-of-birth" type="text" class="form-text" placeholder="MM/DD/YYYY" />
-  <span class="nypl-field-status">Format the date as MM/DD/YYYY</span>
+  <label for="date-of-birth">Date of Birth</label>
+  <input id="date-of-birth" type="date" class="form-text" />
 </div>
     </div>
 
@@ -109,16 +123,46 @@ description: Form fields and user input.
     </code></pre>
     <pre><code class="html">
 &lt;div class=&quot;nypl-date-field&quot;&gt;
-  &lt;label for=&quot;date-of-birth&quot;&gt;Date of Birth &lt;span class=&quot;nypl-required-field&quot;&gt;Required&lt;/span&gt;&lt;/label&gt;
-  &lt;input id=&quot;date-of-birth&quot; type=&quot;text&quot; class=&quot;form-text&quot; placeholder=&quot;MM/DD/YYYY&quot; /&gt;
-  &lt;span class=&quot;nypl-field-status&quot;&gt;Format the date as MM/DD/YYYY&lt;/span&gt;
+  &lt;label for=&quot;date-of-birth&quot;&gt;Date of Birth&lt;/label&gt;
+  &lt;input id=&quot;date-of-birth&quot; type=&quot;date&quot; class=&quot;form-text&quot; /&gt;
 &lt;/div&gt;
     </code></pre>
-    <pre><code class="js">
-$('#date-of-birth').mask('00/00/0000');
+
+    <h3 id="nameFields">Name Fields</h3>
+
+    <p>To be used when requesting the full names of a user in separate first and last name values. Both the first and last name input boxes should be wrapped by a <code>div</code> tag and follow the basic structure of <a href="#textFields">Text Fields</a>.</p>
+
+    <div class="nypl-toolkit-example">
+      <span class="nypl-example-text">Example</span>
+<div class="nypl-name-field">
+  <div>
+    <label for="first-text">First Name</label>
+    <input id="first-text" type="text" />
+  </div>
+  <div>
+    <label for="last-text">Last Name</label>
+    <input id="last-text" type="text" />
+  </div>
+</div>
+    </div>
+
+    <pre><code class="scss">
+.nypl-name-field
+    </code></pre>
+    <pre><code class="html">
+&lt;div class=&quot;nypl-name-field&quot;&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;first-text&quot;&gt;First Name&lt;/label&gt;
+    &lt;input id=&quot;first-text&quot; type=&quot;text&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;label for=&quot;last-text&quot;&gt;Last Name&lt;/label&gt;
+    &lt;input id=&quot;last-text&quot; type=&quot;text&quot; /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
     </code></pre>
 
-    <h3 id="selectBoxes">Select boxes</h3>
+    <h3 id="selectBoxes">Select Boxes</h3>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
@@ -148,7 +192,7 @@ $('#date-of-birth').mask('00/00/0000');
 &lt;/div&gt;
     </code></pre>
 
-    <h3 id="alphaFilters">Alphabetical filters</h3>
+    <h3 id="alphaFilters">Alphabetical Filters</h3>
 
     <p>Not a form element per se but still used within search forms. This control should contain a <code>fieldset</code> and <code>legend</code> that wrap and label it respectively. This is a list of buttons that apply an alphabetical/number-type filter. Currently applied filter is disabled. The "Any" (or multi-character) selection has a <code>nypl-long</code> class.
     </p>
@@ -189,7 +233,7 @@ $('#date-of-birth').mask('00/00/0000');
 
     <h3 id="optInBox">Terms/Opt-in Checkboxes</h3>
 
-    <p>For situations where the user is requested to accept a terms of service or to opt-in to communications from the Library.</p>
+    <p>For situations where the user is requested to accept a terms of service or to opt-in to communications from the Library. When checked, a class of <code>checked</code> should be added to the main element.</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
@@ -202,6 +246,7 @@ $('#date-of-birth').mask('00/00/0000');
 
     <pre><code class="scss">
 .nypl-terms-checkbox
+.checked
     </code></pre>
 
     <pre><code class="html">
@@ -210,6 +255,17 @@ $('#date-of-birth').mask('00/00/0000');
     &lt;input id=&quot;checkbox-optin&quot; type=&quot;checkbox&quot; value=&quot;1&quot; /&gt;Yes, I&#039;d like to receive e-communications about NYPL&#039;s programs, services, and initiatives.
   &lt;/label&gt;
 &lt;/div&gt;
+    </code></pre>
+
+    <pre><code class="js">
+$("#checkbox-optin").change(function(e){
+  var checked = e.target.checked
+  if (checked) {
+    $(".nypl-terms-checkbox").addClass("checked")
+  } else {
+    $(".nypl-terms-checkbox").removeClass("checked")
+  }
+})
     </code></pre>
 
     <h3 id="radioButtons">Radiobutton/Checkbox Groups</h3>
@@ -258,27 +314,26 @@ $('#date-of-birth').mask('00/00/0000');
 &lt;/div&gt;
     </code></pre>
 
-    <h3 id="searchableFieldsets">Searchable fields</h3>
+    <h3 id="searchableFieldsets">Searchable Fields</h3>
 
     <p>Searchable fields allow the user to see many non-exclusive options at the same time while also searching within the option list. Use searchable facets when the list of potential selectable items is too large (i.e. more than a dozen or so). The text field should autocomplete (with result count) as the user types in it. By default, show the top 10 items sorted by the amount of results that will be returned.</p>
 
-    <p>The general structure is: a <code>nypl-facet-search</code> that reflects the <a href="#textFields">general structure of a text field element</a> followed by a fieldset of class <code>nypl-facet-list</code> of items, each with the following structure:</p>
+    <p>The general structure is:
+      <ul>
+        <li>a <code>nypl-facet-toggle</code> toggle button that controls the open/closed state of the widget,</li>
+        <li>a div of class <code>nypl-collapsible</code> which contains:</li>
+        <li>a <code>nypl-facet-search</code> that reflects the <a href="#textFields">general structure of a text field element</a> followed by</li>
+        <li>a fieldset of class <code>nypl-facet-list</code> with</li>
+        <li>each of the possible facet values as described below.</li>
+      </ul>
+    </p>
+    <p>Each facet value checkbox has the following structure (note that the result count comes <strong>before</strong> the facet text):</p>
 
     <pre><code class="html">
-&lt;label for=&quot;my-facet-value-id&quot; class=&quot;nypl-bar_[1 to 100]&quot;&gt;
-  &lt;input id=&quot;my-facet-value-id&quot; type=&quot;checkbox&quot; name=&quot;my-name&quot; value=&quot;my-value&quot;&gt;
-  &lt;span&gt;
-    The facet text
-  &lt;/span&gt;
-  &lt;span class=&quot;nypl-facet-count&quot;&gt;[estimated result count]&lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label id=&quot;my-facet-label-id&quot; for=&quot;my-facet-value-id&quot;&gt;
+&lt;label id=&quot;my-facet-label-id&quot; for=&quot;my-facet-value-id&quot; class=&quot;nypl-bar_[1 to 100]&quot;&gt;
   &lt;input aria-labelledby=&quot;my-facet-label-id my-facet-value-id&quot; id=&quot;my-facet-value-id&quot; type=&quot;checkbox&quot; name=&quot;my-name&quot; value=&quot;my-value&quot; /&gt;
-  &lt;span&gt;
-    The facet text
-  &lt;/span&gt;
   &lt;span class=&quot;nypl-facet-count&quot;&gt;[estimated result count]&lt;/span&gt;
+  &lt;span&gt;The facet text&lt;/span&gt;
 &lt;/label&gt;
     </code></pre>
 
@@ -288,57 +343,58 @@ $('#date-of-birth').mask('00/00/0000');
 
     <p>The facet count is optional but must be of class <code>nypl-facet-count</code>.</p>
 
-    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> Similar to <a href="#radioButtons">Radiobutton/Checkbox Groups</a>, for proper screen reader behavior, each radiobutton or checkbox must be <code>aria-labelledby</code> <strong>both</strong> the title group's <code>label</code> tag and its own corresponding <code>label</code> tag.</p>
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> Similar to <a href="#radioButtons">Radiobutton/Checkbox Groups</a>, for proper screen reader behavior, each radiobutton or checkbox must be <code>aria-labelledby</code> <strong>both</strong> the title group's <code>button</code> tag and its own corresponding <code>label</code> tag.</p>
 
     <p>A “Show X more” <a href="buttons.html#linkButton">link button</a> at the end of the list allows for the user to display X more items to select from. <strong>Important:</strong> When the facet has very few items or when no “Show X more” button is displayed, the class <code>nosearch</code> has to be added to the field. This will hide the search box.</p>
 
-    <p><strong>NOTE:</strong> Place previously checked items <strong>first</strong>.</p>
+    <p>Toggling between closed and open states along with the affected <code>aria-expanded</code> values of the widget will be controlled via JavaScript. A <code>collapsed</code> class must be added (or removed) to the <code>nypl-searchable-field</code> and <code>nypl-collapsible</code> elements. The example below uses jQuery.</p>
+
+    <p><strong>NOTE:</strong> Place previously checked items <strong>first</strong> and without the number. The widget defaults to the <strong>open state</strong> but is <strong>closed via JavaScript on page load</strong>. This is to support situations where JavaScript may be disabled and allow users to see and interact with the facets.</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
-<div class="nypl-searchable-field">
-  <div class="nypl-facet-search">
-    <label id="searchable1" for="subject-text">Subject</label>
-    <input id="subject-text" type="text" placeholder="Search Subjects" />
+<div class="nypl-searchable-field" aria-expanded="true">
+  <button type="button" id="searchable1" class="nypl-facet-toggle"
+    aria-controls="nypl-searchable-field_facet1" aria-expanded="true">
+    Subject
+    <svg aria-hidden="true" class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
+      <title>wedge down icon</title>
+      <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
+    </svg>
+  </button>
+  <div class="nypl-collapsible" id="nypl-searchable-field_facet1" aria-expanded="true">
+    <div class="nypl-facet-search">
+      <label for="subject-text">Search within Subjects</label>
+      <input id="subject-text" type="text" />
+    </div>
+    <fieldset class="nypl-facet-list">
+      <label id="subject_poems" for="subject-poems">
+        <input aria-labelledby="searchable1 subject_poems" id="subject-poems" type="checkbox" name="subject" value="poems" checked="checked" />
+        <span>Poems</span>
+      </label>
+      <label id="subject_ejournals" for="subject-ejournals" class="nypl-bar_43">
+        <input aria-labelledby="searchable1 subject_ejournals" id="subject-ejournals" type="checkbox" name="subject" value="ejournals" />
+        <span class="nypl-facet-count">1,334,741</span>
+        <span>Electronic journals</span>
+      </label>
+      <label id="subject_home" for="subject-home" class="nypl-bar_21">
+        <input aria-labelledby="searchable1 subject_home" id="subject-home" type="checkbox" name="subject" value="home" />
+        <span class="nypl-facet-count">236</span>
+        <span>Electronic books</span>
+      </label>
+      <label id="subject_piano" for="subject-piano" class="nypl-bar_18">
+        <input aria-labelledby="searchable1 subject_piano" id="subject-piano" type="checkbox" name="subject" value="piano" />
+        <span class="nypl-facet-count">198</span>
+        <span>Piano music</span>
+      </label>
+      <label id="subject_opera" for="subject-opera" class="nypl-bar_11">
+        <input aria-labelledby="searchable1 subject_opera" id="subject-opera" type="checkbox" name="subject" value="opera" />
+        <span class="nypl-facet-count">122</span>
+        <span>Operas</span>
+      </label>
+    </fieldset>
+    <button class="nypl-link-button">Show 10 more</button>
   </div>
-  <fieldset class="nypl-facet-list">
-    <label id="subject_poems" for="subject-poems">
-      <input aria-labelledby="searchable1 subject_poems" id="subject-poems" type="checkbox" name="subject" value="poems" checked="checked" />
-      <span>
-        Poems
-      </span>
-      <span class="nypl-facet-count">97</span>
-    </label>
-    <label id="subject_ejournals" for="subject-ejournals" class="nypl-bar_43">
-      <input aria-labelledby="searchable1 subject_ejournals" id="subject-ejournals" type="checkbox" name="subject" value="ejournals" />
-      <span>
-        Electronic journals
-      </span>
-      <span class="nypl-facet-count">489</span>
-    </label>
-    <label id="subject_home" for="subject-home" class="nypl-bar_21">
-      <input aria-labelledby="searchable1 subject_home" id="subject-home" type="checkbox" name="subject" value="home" />
-      <span>
-        Electronic books
-      </span>
-      <span class="nypl-facet-count">236</span>
-    </label>
-    <label id="subject_piano" for="subject-piano" class="nypl-bar_18">
-      <input aria-labelledby="searchable1 subject_piano" id="subject-piano" type="checkbox" name="subject" value="piano" />
-      <span>
-        Piano music
-      </span>
-      <span class="nypl-facet-count">198</span>
-    </label>
-    <label id="subject_opera" for="subject-opera" class="nypl-bar_11">
-      <input aria-labelledby="searchable1 subject_opera" id="subject-opera" type="checkbox" name="subject" value="opera" />
-      <span>
-        Operas
-      </span>
-      <span class="nypl-facet-count">122</span>
-    </label>
-  </fieldset>
-  <button class="nypl-link-button">Show 10 more</button>
 </div>
     </div>
 
@@ -347,54 +403,73 @@ $('#date-of-birth').mask('00/00/0000');
 .nypl-facet-search
 .nypl-facet-list
 .nypl-facet-count
+.nypl-collapsible
+.collapsed
     </code></pre>
 
     <p><strong>NOTE:</strong> As is the case of the <a href="#radioButtons">Radio Buttons</a> In this case the input tags are <strong>wrapped</strong> by the <code>label</code> tag.</p>
 
     <pre><code class="html">
-&lt;div class=&quot;nypl-searchable-field&quot;&gt;
-  &lt;div class=&quot;nypl-facet-search&quot;&gt;
-    &lt;label id=&quot;searchable1&quot; for=&quot;subject-text&quot;&gt;Subject&lt;/label&gt;
-    &lt;input id=&quot;subject-text&quot; type=&quot;text&quot; placeholder=&quot;Search Subjects&quot; /&gt;
+&lt;div class=&quot;nypl-searchable-field&quot; aria-expanded=&quot;true&quot;&gt;
+  &lt;button type=&quot;button&quot; id=&quot;searchable1&quot; class=&quot;nypl-facet-toggle&quot;
+    aria-controls=&quot;nypl-searchable-field_facet1&quot; aria-expanded=&quot;true&quot;&gt;
+    Subject
+    &lt;svg aria-hidden=&quot;true&quot; class=&quot;nypl-icon&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 68 24&quot;&gt;
+      &lt;title&gt;wedge down icon&lt;/title&gt;
+      &lt;polygon points=&quot;67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0&quot; /&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;nypl-collapsible&quot; id=&quot;nypl-searchable-field_facet1&quot; aria-expanded=&quot;true&quot;&gt;
+    &lt;div class=&quot;nypl-facet-search&quot;&gt;
+      &lt;label for=&quot;subject-text&quot;&gt;Search within Subjects&lt;/label&gt;
+      &lt;input id=&quot;subject-text&quot; type=&quot;text&quot; /&gt;
+    &lt;/div&gt;
+    &lt;fieldset class=&quot;nypl-facet-list&quot;&gt;
+      &lt;label id=&quot;subject_poems&quot; for=&quot;subject-poems&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable1 subject_poems&quot; id=&quot;subject-poems&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;poems&quot; checked=&quot;checked&quot; /&gt;
+        &lt;span&gt;Poems&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_ejournals&quot; for=&quot;subject-ejournals&quot; class=&quot;nypl-bar_43&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable1 subject_ejournals&quot; id=&quot;subject-ejournals&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;ejournals&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;1,334,741&lt;/span&gt;
+        &lt;span&gt;Electronic journals&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_home&quot; for=&quot;subject-home&quot; class=&quot;nypl-bar_21&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable1 subject_home&quot; id=&quot;subject-home&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;home&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;236&lt;/span&gt;
+        &lt;span&gt;Electronic books&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_piano&quot; for=&quot;subject-piano&quot; class=&quot;nypl-bar_18&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable1 subject_piano&quot; id=&quot;subject-piano&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;piano&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;198&lt;/span&gt;
+        &lt;span&gt;Piano music&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_opera&quot; for=&quot;subject-opera&quot; class=&quot;nypl-bar_11&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable1 subject_opera&quot; id=&quot;subject-opera&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;opera&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;122&lt;/span&gt;
+        &lt;span&gt;Operas&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/fieldset&gt;
+    &lt;button class=&quot;nypl-link-button&quot;&gt;Show 10 more&lt;/button&gt;
   &lt;/div&gt;
-  &lt;fieldset class=&quot;nypl-facet-list&quot;&gt;
-    &lt;label id=&quot;subject_poems&quot; for=&quot;subject-poems&quot;&gt;
-      &lt;input aria-labelledby=&quot;searchable1 subject_poems&quot; id=&quot;subject-poems&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;poems&quot; checked=&quot;checked&quot; /&gt;
-      &lt;span&gt;
-        Poems
-      &lt;/span&gt;
-    &lt;/label&gt;
-    &lt;label id=&quot;subject_ejournals&quot; for=&quot;subject-ejournals&quot; class=&quot;nypl-bar_43&quot;&gt;
-      &lt;input aria-labelledby=&quot;searchable1 subject_ejournals&quot; id=&quot;subject-ejournals&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;ejournals&quot; /&gt;
-      &lt;span&gt;
-        Electronic journals
-      &lt;/span&gt;
-      &lt;span class=&quot;nypl-facet-count&quot;&gt;489&lt;/span&gt;
-    &lt;/label&gt;
-    &lt;label id=&quot;subject_home&quot; for=&quot;subject-home&quot; class=&quot;nypl-bar_21&quot;&gt;
-      &lt;input aria-labelledby=&quot;searchable1 subject_home&quot; id=&quot;subject-home&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;home&quot; /&gt;
-      &lt;span&gt;
-        Electronic books
-      &lt;/span&gt;
-      &lt;span class=&quot;nypl-facet-count&quot;&gt;236&lt;/span&gt;
-    &lt;/label&gt;
-    &lt;label id=&quot;subject_piano&quot; for=&quot;subject-piano&quot; class=&quot;nypl-bar_18&quot;&gt;
-      &lt;input aria-labelledby=&quot;searchable1 subject_piano&quot; id=&quot;subject-piano&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;piano&quot; /&gt;
-      &lt;span&gt;
-        Piano music
-      &lt;/span&gt;
-      &lt;span class=&quot;nypl-facet-count&quot;&gt;198&lt;/span&gt;
-    &lt;/label&gt;
-    &lt;label id=&quot;subject_opera&quot; for=&quot;subject-opera&quot; class=&quot;nypl-bar_11&quot;&gt;
-      &lt;input aria-labelledby=&quot;searchable1 subject_opera&quot; id=&quot;subject-opera&quot; type=&quot;checkbox&quot; name=&quot;subject&quot; value=&quot;opera&quot; /&gt;
-      &lt;span&gt;
-        Operas
-      &lt;/span&gt;
-      &lt;span class=&quot;nypl-facet-count&quot;&gt;122&lt;/span&gt;
-    &lt;/label&gt;
-  &lt;/fieldset&gt;
-  &lt;button class=&quot;nypl-link-button&quot;&gt;Show 10 more&lt;/button&gt;
 &lt;/div&gt;
+    </code></pre>
+    <pre><code class="js">
+// jQuery example
+$("button.nypl-facet-toggle").click(function (e) {
+  toggleFacet(e)
+})
+
+function toggleFacet(e) {
+  var button = $(e.target)
+  var facet = button.parent()
+  var collapsible = facet.find(".nypl-collapsible")
+  button.attr("aria-expanded", button.attr("aria-expanded") == "false" ? "true" : "false")
+  facet.attr("aria-expanded", facet.attr("aria-expanded") == "false" ? "true" : "false")
+  collapsible.attr("aria-expanded", collapsible.attr("aria-expanded") == "false" ? "true" : "false")
+  facet.toggleClass("collapsed")
+  collapsible.toggleClass("collapsed")
+}
     </code></pre>
 
     <h3 id="formValidation">Form Validation</h3>
@@ -410,7 +485,7 @@ $('#date-of-birth').mask('00/00/0000');
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
 <div class="nypl-form-error">
-  <h2>Opps! Seems there are some errors in this form!</h2>
+  <h2>Oops! Seems there are some errors in this form!</h2>
   <ul>
     <li>The <a href="#">username</a> already exists. Please choose another username.</li>
     <li>The <a href="#">email</a> is invalid.</li>
@@ -422,44 +497,323 @@ $('#date-of-birth').mask('00/00/0000');
     </code></pre>
     <pre><code class="html">
 &lt;div class=&quot;nypl-form-error&quot;&gt;
-  There are errors in in this form:
+  &lt;h2&gt;Oops! Seems there are some errors in this form!&lt;/h2&gt;
   &lt;ul&gt;
     &lt;li&gt;The &lt;a href=&quot;#&quot;&gt;username&lt;/a&gt; already exists. Please choose another username.&lt;/li&gt;
     &lt;li&gt;The &lt;a href=&quot;#&quot;&gt;email&lt;/a&gt; is invalid.&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/div&gt;
-    </code></pre>
+&lt;/div&gt;    </code></pre>
 
     <h4 id="fieldErrors">Error state and messages on text fields</h4>
 
     <p>Any field where user input could be erroneous should add the class <code>nypl-field-error</code> upon validation. It is up to the product designer to determine what fields should have an error state and provide correct explanatory text using an <code>nypl-field-status</code> as described in <a href="#requiredFields">Required Fields</a>. It is the responsibility of the developer to implement the necessary validations.</p>
 
-    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> The correct <code>aria</code> attributes must be added to the <code>input</code> field for proper accessibility coverage. The example below describes both <code>aria-requried</code> and <code>aria-invalid</code>. <code>aria-requried</code> will be a static state for the form, whereas <code>aria-invalid</code> will initially be set to <code>false</code>, upon a an invalid submission, the attribute should return <code>true</code> as it's value. See the following resources:
-      <ul>
-        <li>
-          <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/forms/Basic_form_hints#Required_and_invalid_fields" target="_blank">Basic Form Hints: Required and invalid fields</a>
-        </li>
-      </ul>
-    </p>
-<div class="nypl-toolkit-example">
-  <span class="nypl-example-text">Example</span>
-  <div class="nypl-text-field nypl-field-error">
-    <label for="email-field">Email
-      <span class="nypl-required-field">Required</span>
-    </label>
-    <input aria-required="true" aria-invalid="true" id="email-field" type="text" placeholder="" value="sally ride" />
-    <span class="nypl-field-status">Email address must use the correct formatting. Ex: <em>prudence@example.org</em></span>
-  </div>
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> The correct <code>aria</code> attributes must be added to the <code>input</code> field for proper accessibility coverage. The example below describes both <code>aria-required</code> and <code>aria-invalid</code>. <code>aria-required</code> will be a static state for the form, whereas <code>aria-invalid</code> will initially be set to <code>false</code>, upon a an invalid submission, the attribute should return <code>true</code> as it's value. The field must also make use of the <code>nypl-field-status</code> <code>span</code> element as described in <a href="#requiredFields">Required Fields</a> above. The example below provides a very simple jQuery-based implementation. See also <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/forms/Basic_form_hints#Required_and_invalid_fields" target="_blank">Basic Form Hints: Required and invalid fields</a> in the Mozilla Developer Network.</p>
+
+    <div class="nypl-toolkit-example">
+      <span class="nypl-example-text">Example</span>
+<div class="nypl-text-field nypl-field-error" id="email1">
+  <label for="email-field" id="email1-label">Email
+    <span class="nypl-required-field">Required</span>
+  </label>
+  <input aria-required="true" aria-invalid="true" aria-labelledby="email1-label email1-status" id="email-field" type="text" placeholder="" value="sally ride" />
+  <span class="nypl-field-status" id="email1-status" aria-live="assertive" aria-atomic="true">Email address must use the correct formatting. Example: <em>prudence@example.org</em></span>
 </div>
+    </div>
     <pre><code class="scss">
-.nypl-error-field
+.nypl-field-error
     </code></pre>
     <pre><code class="html">
-&lt;div class=&quot;nypl-text-field nypl-field-error&quot;&gt;
+&lt;div class=&quot;nypl-text-field nypl-field-error&quot; id=&quot;email1&quot;&gt;
   &lt;label for=&quot;email-field&quot;&gt;Email
     &lt;span class=&quot;nypl-required-field&quot;&gt;Required&lt;/span&gt;
   &lt;/label&gt;
   &lt;input aria-required=&quot;true&quot; aria-invalid=&quot;true&quot; id=&quot;email-field&quot; type=&quot;text&quot; placeholder=&quot;&quot; value=&quot;sally ride&quot; /&gt;
-  &lt;span class=&quot;nypl-field-status&quot;&gt;Email address must use the correct formatting. Ex: &lt;em&gt;prudence@example.org&lt;/em&gt;&lt;/span&gt;
+  &lt;span class=&quot;nypl-field-status&quot;  aria-live=&quot;assertive&quot; aria-atomic=&quot;true&quot;&gt;Email address must use the correct formatting. Ex: &lt;em&gt;prudence@example.org&lt;/em&gt;&lt;/span&gt;
 &lt;/div&gt;
     </code></pre>
+    <pre><code class="js">
+$("#email1 #email-field").blur(function (e) {
+  var self = $(e.target)
+  var text = self.val()
+  var regex = /^[^@\s]+@[^@\s]+\.[^@\s]+/
+  if (!regex.test(text)) {
+    $("#email1").addClass("nypl-field-error")
+    $("#email1 .nypl-field-status").text("The Email address must use the correct formatting. Example: prudence@example.org. Try again.")
+  } else {
+    $("#email1").removeClass("nypl-field-error")
+    $("#email1 .nypl-field-status").text("")
+    self.attr("aria-invalid", "false")
+  }
+})
+    </code></pre>
+
+    <h3 id="fieldsSpinners">Fields With Spinners</h3>
+
+    <p>Use these spinners when the interface being developed updates remotely (via AJAX calls or similar) instead of a regular page refresh to indicate the user that background processing is happening. This prevents user confusion and error.</p>
+
+    <p>The main field element (whether a div or fieldset) must include an additional <code>nypl-spinner-field</code> class. Once the user submits or makes changes in the field that produce a remote request, an additional <code>spinning</code> class should be activated so that an animation is displayed overlaying it.</p>
+
+    <p><strong>Important:</strong> While the overlay prevents some user input, the necessary precautions of disabling and/or blurring elements within the field should also be taken into account.</p>
+
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> This is a visual-only <a href="https://en.wikipedia.org/wiki/Progressive_enhancement">progressive enhancement</a> recommendation and should not be relied on as the only indicator of state.</p>
+
+  <div class="nypl-toolkit-example">
+  <span class="nypl-example-text">Example</span>
+
+<fieldset class="nypl-omnisearch nypl-spinner-field">
+  <input type="submit" id="nypl-omni-button1" value="Search">
+  <span class="nypl-omni-fields">
+    <label for="search-by-field1">Search in</label>
+    <select id="search-by-field1"><option value="all">All fields</option><option value="title">Title</option><option value="contributor">Author/Contributor</option><option value="subject">Subject</option><option value="series">Series</option><option value="call_number">Call number</option></select>
+  </span>
+  <input type="text" aria-labelledby="nypl-omni-button1" value="" />
+</fieldset>
+
+<div class="nypl-text-field nypl-spinner-field">
+  <label for="keyword-text2">Title or description</label>
+  <input id="keyword-text2" type="text" placeholder="Enter keywords" />
+</div>
+
+
+<div class="nypl-select-field nypl-spinner-field">
+  <label for="topics2">Topics</label>
+  <select id="topics2" name="topics">
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+    <option value="…">…</option>
+  </select>
+</div>
+
+<div class="nypl-alphabetical-filter nypl-spinner-field">
+  <fieldset>
+    <legend>Name starts with</legend>
+    <button name="az-filter" disabled="true" class="nypl-long">Any</button>
+    <button name="az-filter" title="Show only resources with name starting with a number">#</button>
+    <button name="az-filter" title="Show only resources with name starting with A">A</button>
+    <button name="az-filter" title="Show only resources with name starting with B">B</button>
+    <button name="az-filter" title="Show only resources with name starting with C">C</button>
+    <button name="az-filter" title="Show only resources with name starting with …">…</button>
+  </fieldset>
+</div>
+
+
+<div class="nypl-radiobutton-field nypl-spinner-field">
+  <fieldset>
+    <legend id="radiobutton-group2">Accessible from</legend>
+    <label id="radiobutton-group2_every" for="available-every2">
+      <input aria-labelledby="radiobutton-group2 radiobutton-group2_every" id="available-every2" type="radio" name="available2" value="any" />
+      <span>Anywhere</span>
+    </label>
+    <label id="radiobutton-group2_home" for="available-home2">
+      <input aria-labelledby="radiobutton-group2 radiobutton-group2_home" id="available-home2" type="radio" name="available2" value="home" />
+      <span>Home with a library card</span>
+    </label>
+    <label id="radiobutton-group2_library" for="available-library2">
+      <input aria-labelledby="radiobutton-group2 radiobutton-group2_library" id="available-library2" type="radio" name="available2" value="library" />
+      <span>A library branch</span>
+    </label>
+  </fieldset>
+</div>
+
+
+<div class="nypl-searchable-field nypl-spinner-field" aria-expanded="true">
+  <button type="button" id="searchable2" class="nypl-facet-toggle"
+    aria-controls="nypl-searchable-field_subject" aria-expanded="true">
+    Subject
+    <svg aria-hidden="true" class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
+      <title>wedge down icon</title>
+      <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
+    </svg>
+  </button>
+  <div class="nypl-collapsible" id="nypl-searchable-field_subject" aria-expanded="false">
+    <div class="nypl-facet-search">
+      <label id="searchable2-label" for="subject-text2">Search within Subjects</label>
+      <input id="subject-text2" type="text" />
+    </div>
+    <fieldset class="nypl-facet-list">
+      <label id="subject_poems2" for="subject-poems2">
+        <input aria-labelledby="searchable2 subject_poems2" id="subject-poems2" type="checkbox" name="subject2" value="poems" checked="checked" />
+        <span>Poems</span>
+      </label>
+      <label id="subject_ejournals2" for="subject-ejournals2" class="nypl-bar_43">
+        <input aria-labelledby="searchable2 subject_ejournals2" id="subject-ejournals2" type="checkbox" name="subject2" value="ejournals" />
+        <span class="nypl-facet-count">1,334,741</span>
+        <span>Electronic journals</span>
+      </label>
+      <label id="subject_home2" for="subject-home2" class="nypl-bar_21">
+        <input aria-labelledby="searchable2 subject_home2" id="subject-home2" type="checkbox" name="subject2" value="home" />
+        <span class="nypl-facet-count">236</span>
+        <span>Electronic books</span>
+      </label>
+      <label id="subject_piano2" for="subject-piano2" class="nypl-bar_18">
+        <input aria-labelledby="searchable2 subject_piano2" id="subject-piano2" type="checkbox" name="subject2" value="piano" />
+        <span class="nypl-facet-count">198</span>
+        <span>Piano music</span>
+      </label>
+      <label id="subject_opera2" for="subject-opera2" class="nypl-bar_11">
+        <input aria-labelledby="searchable2 subject_opera2" id="subject-opera2" type="checkbox" name="subject2" value="opera" />
+        <span class="nypl-facet-count">122</span>
+        <span>Operas</span>
+      </label>
+    </fieldset>
+    <button class="nypl-link-button">Show 10 more</button>
+  </div>
+</div>
+
+  </div>
+
+  <pre><code class="scss">
+.nypl-spinner-field
+.spinning
+  </code></pre>
+
+  <pre><code class="html">
+&lt;fieldset class=&quot;nypl-omnisearch nypl-spinner-field&quot;&gt;
+  &lt;input type=&quot;submit&quot; id=&quot;nypl-omni-button1&quot; value=&quot;Search&quot;&gt;
+  &lt;span class=&quot;nypl-omni-fields&quot;&gt;
+    &lt;label for=&quot;search-by-field1&quot;&gt;Search in&lt;/label&gt;
+    &lt;select id=&quot;search-by-field1&quot;&gt;&lt;option value=&quot;all&quot;&gt;All fields&lt;/option&gt;&lt;option value=&quot;title&quot;&gt;Title&lt;/option&gt;&lt;option value=&quot;contributor&quot;&gt;Author/Contributor&lt;/option&gt;&lt;option value=&quot;subject&quot;&gt;Subject&lt;/option&gt;&lt;option value=&quot;series&quot;&gt;Series&lt;/option&gt;&lt;option value=&quot;call_number&quot;&gt;Call number&lt;/option&gt;&lt;/select&gt;
+  &lt;/span&gt;
+  &lt;input type=&quot;text&quot; aria-labelledby=&quot;nypl-omni-button1&quot; value=&quot;&quot; /&gt;
+&lt;/fieldset&gt;
+
+&lt;div class=&quot;nypl-text-field nypl-spinner-field&quot;&gt;
+  &lt;label for=&quot;keyword-text2&quot;&gt;Title or description&lt;/label&gt;
+  &lt;input id=&quot;keyword-text2&quot; type=&quot;text&quot; placeholder=&quot;Enter keywords&quot; /&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;nypl-select-field nypl-spinner-field&quot;&gt;
+  &lt;label for=&quot;topics2&quot;&gt;Topics&lt;/label&gt;
+  &lt;select id=&quot;topics2&quot; name=&quot;topics&quot;&gt;
+    &lt;option value=&quot;1&quot;&gt;One&lt;/option&gt;
+    &lt;option value=&quot;2&quot;&gt;Two&lt;/option&gt;
+    &lt;option value=&quot;3&quot;&gt;Three&lt;/option&gt;
+    &lt;option value=&quot;&hellip;&quot;&gt;&hellip;&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;nypl-alphabetical-filter nypl-spinner-field&quot;&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Name starts with&lt;/legend&gt;
+    &lt;button name=&quot;az-filter&quot; disabled=&quot;true&quot; class=&quot;nypl-long&quot;&gt;Any&lt;/button&gt;
+    &lt;button name=&quot;az-filter&quot; title=&quot;Show only resources with name starting with a number&quot;&gt;#&lt;/button&gt;
+    &lt;button name=&quot;az-filter&quot; title=&quot;Show only resources with name starting with A&quot;&gt;A&lt;/button&gt;
+    &lt;button name=&quot;az-filter&quot; title=&quot;Show only resources with name starting with B&quot;&gt;B&lt;/button&gt;
+    &lt;button name=&quot;az-filter&quot; title=&quot;Show only resources with name starting with C&quot;&gt;C&lt;/button&gt;
+    &lt;button name=&quot;az-filter&quot; title=&quot;Show only resources with name starting with &hellip;&quot;&gt;&hellip;&lt;/button&gt;
+  &lt;/fieldset&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;nypl-radiobutton-field nypl-spinner-field&quot;&gt;
+  &lt;fieldset&gt;
+    &lt;legend id=&quot;radiobutton-group2&quot;&gt;Accessible from&lt;/legend&gt;
+    &lt;label id=&quot;radiobutton-group2_every&quot; for=&quot;available-every2&quot;&gt;
+      &lt;input aria-labelledby=&quot;radiobutton-group2 radiobutton-group2_every&quot; id=&quot;available-every2&quot; type=&quot;radio&quot; name=&quot;available2&quot; value=&quot;any&quot; /&gt;
+      &lt;span&gt;Anywhere&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label id=&quot;radiobutton-group2_home&quot; for=&quot;available-home2&quot;&gt;
+      &lt;input aria-labelledby=&quot;radiobutton-group2 radiobutton-group2_home&quot; id=&quot;available-home2&quot; type=&quot;radio&quot; name=&quot;available2&quot; value=&quot;home&quot; /&gt;
+      &lt;span&gt;Home with a library card&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label id=&quot;radiobutton-group2_library&quot; for=&quot;available-library2&quot;&gt;
+      &lt;input aria-labelledby=&quot;radiobutton-group2 radiobutton-group2_library&quot; id=&quot;available-library2&quot; type=&quot;radio&quot; name=&quot;available2&quot; value=&quot;library&quot; /&gt;
+      &lt;span&gt;A library branch&lt;/span&gt;
+    &lt;/label&gt;
+  &lt;/fieldset&gt;
+&lt;/div&gt;
+
+
+&lt;div class=&quot;nypl-searchable-field nypl-spinner-field&quot; aria-expanded=&quot;true&quot;&gt;
+  &lt;button type=&quot;button&quot; id=&quot;searchable2&quot; class=&quot;nypl-facet-toggle&quot;
+    aria-controls=&quot;nypl-searchable-field_subject&quot; aria-expanded=&quot;true&quot;&gt;
+    Subject
+    &lt;svg aria-hidden=&quot;true&quot; class=&quot;nypl-icon&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 68 24&quot;&gt;
+      &lt;title&gt;wedge down icon&lt;/title&gt;
+      &lt;polygon points=&quot;67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0&quot; /&gt;
+    &lt;/svg&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;nypl-collapsible&quot; id=&quot;nypl-searchable-field_subject&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;div class=&quot;nypl-facet-search&quot;&gt;
+      &lt;label id=&quot;searchable2-label&quot; for=&quot;subject-text2&quot;&gt;Search within Subjects&lt;/label&gt;
+      &lt;input id=&quot;subject-text2&quot; type=&quot;text&quot; /&gt;
+    &lt;/div&gt;
+    &lt;fieldset class=&quot;nypl-facet-list&quot;&gt;
+      &lt;label id=&quot;subject_poems2&quot; for=&quot;subject-poems2&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable2 subject_poems2&quot; id=&quot;subject-poems2&quot; type=&quot;checkbox&quot; name=&quot;subject2&quot; value=&quot;poems&quot; checked=&quot;checked&quot; /&gt;
+        &lt;span&gt;Poems&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_ejournals2&quot; for=&quot;subject-ejournals2&quot; class=&quot;nypl-bar_43&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable2 subject_ejournals2&quot; id=&quot;subject-ejournals2&quot; type=&quot;checkbox&quot; name=&quot;subject2&quot; value=&quot;ejournals&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;1,334,741&lt;/span&gt;
+        &lt;span&gt;Electronic journals&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_home2&quot; for=&quot;subject-home2&quot; class=&quot;nypl-bar_21&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable2 subject_home2&quot; id=&quot;subject-home2&quot; type=&quot;checkbox&quot; name=&quot;subject2&quot; value=&quot;home&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;236&lt;/span&gt;
+        &lt;span&gt;Electronic books&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_piano2&quot; for=&quot;subject-piano2&quot; class=&quot;nypl-bar_18&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable2 subject_piano2&quot; id=&quot;subject-piano2&quot; type=&quot;checkbox&quot; name=&quot;subject2&quot; value=&quot;piano&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;198&lt;/span&gt;
+        &lt;span&gt;Piano music&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label id=&quot;subject_opera2&quot; for=&quot;subject-opera2&quot; class=&quot;nypl-bar_11&quot;&gt;
+        &lt;input aria-labelledby=&quot;searchable2 subject_opera2&quot; id=&quot;subject-opera2&quot; type=&quot;checkbox&quot; name=&quot;subject2&quot; value=&quot;opera&quot; /&gt;
+        &lt;span class=&quot;nypl-facet-count&quot;&gt;122&lt;/span&gt;
+        &lt;span&gt;Operas&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/fieldset&gt;
+    &lt;button class=&quot;nypl-link-button&quot;&gt;Show 10 more&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+  </code></pre>
+
+  <pre><code class="js">
+// example jQuery-based activation code
+function makeItSpin(who, input) {
+  $(who).toggleClass("spinning");
+  if (input) $(input).attr("disabled", "true").blur();
+  setTimeout(function () {
+    $(who).toggleClass("spinning")
+    if (input) $(input).removeAttr("disabled");
+  }, 2000)
+}
+
+$(".nypl-omnisearch.nypl-spinner-field #nypl-omni-button1").click( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent(), self)
+})
+$(".nypl-omnisearch.nypl-spinner-field input[type=text]").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent(), self)
+})
+$(".nypl-text-field.nypl-spinner-field input").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent())
+})
+$(".nypl-select-field.nypl-spinner-field select").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent(), self)
+})
+$(".nypl-alphabetical-filter.nypl-spinner-field button").click( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent().parent())
+})
+$(".nypl-radiobutton-field.nypl-spinner-field fieldset").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent().parent().parent(), self.parent().parent())
+})
+$(".nypl-searchable-field.nypl-spinner-field #subject-text2").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent().parent())
+})
+$(".nypl-searchable-field.nypl-spinner-field fieldset").change( function(e) {
+  var self = $(e.target)
+  makeItSpin(self.parent().parent().parent(), self.parent().parent())
+})
+
+  </code></pre>

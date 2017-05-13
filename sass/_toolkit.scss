@@ -15,12 +15,46 @@
 @import "tables-results";
 @import "buttons";
 
+.hidden { // hacky
+  display: none;
+}
+
+.centered { // also hacky
+  text-align: center;
+}
+
 .nypl-icon {
   @include nypl-icon;
 }
 
 .nypl-logo-rev {
   @include nypl-icon($height: $logo-height, $width: $logo-width, $background-color: transparent);
+}
+
+@for $percent from 1 through 100 {
+  .nypl-bar_#{$percent} {
+    @include bar($percent);
+  }
+}
+
+.nypl-lead {
+  @include lead;
+}
+
+.nypl-basic-list {
+  @include basic-list;
+}
+
+.nypl-bar-list {
+  @include bar-list;
+}
+
+.nypl-custom-list {
+  @include custom-list;
+}
+
+.nypl-collapsible {
+  @include collapsible;
 }
 
 .nypl-link-button {
@@ -35,8 +69,9 @@
   @include results-button;
 }
 
-.nypl-request-button {
-  @include request-button;
+.nypl-request-button, // for background compatibility support
+.nypl-primary-button {
+  @include primary-button;
 }
 
 .nypl-service-button {
@@ -57,8 +92,9 @@
   @include navigation-button;
 }
 
-.nypl-spinner-button {
-  @include spinner-button;
+.nypl-spinner-button,
+.nypl-spinner-field {
+  @include spinner-element;
 }
 
 .nypl-general-note {
@@ -277,8 +313,39 @@
   @include results-item;
 }
 
-.nypl-item-toc {
-  @include item-toc;
+.nypl-results-unavailable {
+  @include results-unavailable;
+}
+
+.nypl-results-item-description {
+  @include results-item-description;
+}
+
+.nypl-results-info,
+.nypl-results-place,
+.nypl-results-publisher,
+.nypl-results-date {
+  @include results-info;
+}
+
+.nypl-results-media {
+  @include results-media;
+}
+
+.nypl-results-use {
+  @include results-use;
+}
+
+.nypl-item-info {
+  @include item-info;
+}
+
+.nypl-item-media {
+  @include item-media;
+}
+
+.nypl-item-use {
+  @include results-use;
 }
 
 .nypl-item-holdings {

@@ -52,6 +52,7 @@ $form-padding: 0.5rem;
   background-color: $nypl-search-color-light;
   border: 0;
   border-radius: $general-border-radius $general-border-radius 0 0;
+  font-size: 1rem;
   padding: 0;
 }
 
@@ -88,6 +89,7 @@ $form-padding: 0.5rem;
 
   input[type=text],
   input[type=email],
+  input[type=date],
   input[type=number] {
     @include text;
   }
@@ -123,11 +125,12 @@ $form-padding: 0.5rem;
 }
 
 @mixin name-field {
+  @include clearfix;
   @include fieldset;
   @include text-field-with-label;
   background-color: $page-background-color;
 
-  div {
+  > div {
     display: block;
     float: left;
     margin-right: 0.125rem;
@@ -173,11 +176,14 @@ $form-padding: 0.5rem;
   @include fieldset;
   @include text-field-with-label;
   min-width: 12rem;
-  width: 50%;
+
+  input[type=date] {
+    -webkit-appearance: none; // to prevent iOS override
+  }
 }
 
 @mixin required-field {
-  color: $highlight-color;
+  color: darken($highlight-color, 10%);
   font-size: 0.9rem;
   font-weight: normal;
 }
@@ -248,6 +254,10 @@ $form-padding: 0.5rem;
   input[type=checkbox] {
     height: initial;
     margin: 0 0.25rem 0 0;
+  }
+
+  &.checked {
+    border-left-color: $nypl-green;
   }
 }
 
@@ -329,8 +339,39 @@ $form-padding: 0.5rem;
   @include simple-radiobutton;
   padding-bottom: $form-padding;
 
+  button.nypl-facet-toggle {
+    background-color: $nypl-search-color-dark;
+    border: 0;
+    border-radius: $general-border-radius $general-border-radius 0 0;
+    color: $page-background-color;
+    cursor: pointer;
+    display: block;
+    font-weight: bold;
+    position: relative;
+    padding-bottom: 0.25rem;
+    padding-left: $form-padding;
+    padding-right: 1.5rem;
+    padding-top: 0.25rem;
+    text-align: left;
+    width: 100%;
+
+    .nypl-icon {
+      @include nypl-icon($fill: $page-background-color, $background-color: $nypl-search-color-dark);
+      @include transition(all, $hover-time, ease-in);
+      position: absolute;
+      right: 0.5rem;
+      top: 0.65rem;
+      transform: rotate(180deg);
+    }
+  }
+
   .nypl-facet-search {
     @include text-field-with-label;
+    position: relative;
+
+    label {
+      font-weight: normal;
+    }
   }
 
   .nypl-facet-list {
@@ -342,38 +383,19 @@ $form-padding: 0.5rem;
       display: block;
       font-size: 0.85rem;
       margin-top: 0.2rem;
-
-      @for $percent from 1 through 100 {
-        &.nypl-bar_#{$percent} {
-          background: linear-gradient(to right, transparent 0%, transparent ((100 - $percent) * 1%), $nypl-bar-color ((100 - $percent) * 1%), $nypl-bar-color) 100%;
-        }
-      }
     }
 
     input[type="radio"],
     input[type="checkbox"] {
-      display: block;
-      height: 1.6rem;
-      float: left;
+      display: inline-block;
     }
 
-    span {
-      display: block;
-      float: left;
-      padding: 0 $form-padding 0 0;
-      width: calc(100% - 4rem - #{$form-padding});
-
-      &.nypl-collapsed {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      &.nypl-facet-count {
-        float: right;
-        text-align: right;
-        width: 2rem;
-      }
+    .nypl-facet-count {
+      color: $nypl-gray;
+      display: inline-block;
+      float: right;
+      margin: 0 0.25rem 0 1rem;
+      text-align: right;
     }
   }
 
@@ -381,17 +403,17 @@ $form-padding: 0.5rem;
     margin: $form-padding $form-padding 0;
   }
 
+  &.collapsed {
+    .nypl-facet-toggle .nypl-icon {
+      transform: rotate(0deg);
+    }
+  }
+
   &.nosearch {
     // when there are too few items to make search worthwhile
 
     .nypl-facet-search {
-      label {
-        position: relative;
-      }
-
-      input {
-        display: none;
-      }
+      display: none;
     }
 
   }

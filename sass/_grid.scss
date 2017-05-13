@@ -7,16 +7,16 @@
 @warn "remove magic numbers";
 
 @mixin page-header {
-  background-color: $page-color-light;
+  background-color: lighten($page-color-light, 10%);
   margin-bottom: 1rem;
 
   h1,
   h2 {
+    font-size: 2rem;
     margin: 0;
   }
 
   h2 { // when it's a secondary title (real title is inside content below)
-    font-size: 2rem;
     line-height: 1;
   }
 }
@@ -29,6 +29,13 @@
   li {
     display: inline-block;
     margin-left: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include media($mobile-breakpoint) {
+      max-width: 90vw;
+    }
 
     &::before {
       content: "> ";

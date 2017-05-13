@@ -1,9 +1,9 @@
 ---
-title: Buttons and menus
+title: Buttons And Menus
 description: Buttons and menus.
 ---
 
-<h3 id="rectangularButton">Rectangular Button</h3>
+<h3 id="basicButton">Basic Button</h3>
 <p>A generic button with an inverted hover state to be used for standard actions.</p>
   <div class="nypl-toolkit-example">
   <span class="nypl-example-text">Example</span>
@@ -16,17 +16,17 @@ description: Buttons and menus.
 &lt;button class=&quot;nypl-basic-button&quot;&gt;Log in&lt;/button&gt;
 </code></pre>
 
-<h3 id="requestButton">Rounded Button</h3>
+<h3 id="primaryButton">Primary Action Button</h3>
 <p>A blue-colored button used for request actions.</p>
   <div class="nypl-toolkit-example">
   <span class="nypl-example-text">Example</span>
-<button class="nypl-request-button">Request a Button</button>
+<button class="nypl-primary-button">Primary Action Button</button>
   </div>
   <pre><code class="scss">
-.nypl-request-button
+.nypl-primary-button
   </code></pre>
   <pre><code class="html">
-&lt;button class=&quot;nypl-request-button&quot;&gt;Request a Button&lt;/button&gt;
+&lt;button class=&quot;nypl-primary-button&quot;&gt;Request a Button&lt;/button&gt;
 </code></pre>
 
 <h3 id="spinnerButton">Buttons With Spinners</h3>
@@ -38,14 +38,15 @@ description: Buttons and menus.
   <div class="nypl-toolkit-example">
   <span class="nypl-example-text">Example</span>
 <button class="nypl-basic-button nypl-spinner-button">Click To Activate!</button>
-<button class="nypl-request-button nypl-spinner-button">Click To Activate!</button>
+<button class="nypl-primary-button nypl-spinner-button">Click To Activate!</button>
   </div>
   <pre><code class="scss">
 .nypl-spinner-button
+.spinning
   </code></pre>
   <pre><code class="html">
 &lt;button class=&quot;nypl-basic-button nypl-spinner-button&quot;&gt;Click To Activate!&lt;/button&gt;
-&lt;button class=&quot;nypl-request-button nypl-spinner-button&quot;&gt;Click To Activate!&lt;/button&gt;
+&lt;button class=&quot;nypl-primary-button nypl-spinner-button&quot;&gt;Click To Activate!&lt;/button&gt;
 </code></pre>
   <pre><code class="js">
 // example jQuery-based activation code
@@ -54,6 +55,10 @@ $(".nypl-spinner-button").on("click touchend", function(e) {
   self.toggleClass("spinning");
   self.blur();
   self.attr("disabled", "true");
+  setTimeout(function () {
+    self.toggleClass("spinning")
+    self.removeAttr("disabled");
+  }, 2000)
 })
   </code></pre>
 
@@ -174,21 +179,21 @@ self.toggleClass("active").attr("aria-expanded", "true")
   <div class="nypl-toolkit-example">
   <span class="nypl-example-text">Example</span>
 <div class="nypl-navigation-button">
-<button class="nypl-navigation-button_button"
-      aria-expanded="false"
-      aria-controls="nypl-navigation-button_list1"
-      id="nypl-navigation-button_button">
-Search Quick Links
-<svg aria-hidden="true" class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24"><title>wedge down icon</title><polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" /></svg>
-</button>
-<ul id="nypl-navigation-button_list1"
-  class="nypl-navigation-button_list hidden"
-  role="menu"
-  aria-labelledby="nypl-navigation-button_button">
-<li role="none"><a href="//duckduckgo.com" role="menuitem" tabindex="-1">Duck Duck Go</a></li>
-<li role="none"><a href="//google.com" role="menuitem" tabindex="-1">Google</a></li>
-<li role="none"><a href="//bing.com" role="menuitem" tabindex="-1">Bing</a></li>
-</ul>
+  <button class="nypl-navigation-button_button"
+        aria-expanded="false"
+        aria-controls="nypl-navigation-button_list1"
+        id="nypl-navigation-button_button">
+  Search Quick Links
+  <svg aria-hidden="true" class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24"><title>wedge down icon</title><polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" /></svg>
+  </button>
+  <ul id="nypl-navigation-button_list1"
+    class="nypl-navigation-button_list hidden"
+    role="menu"
+    aria-labelledby="nypl-navigation-button_button">
+    <li role="none"><a href="//duckduckgo.com" role="menuitem" tabindex="-1">Duck Duck Go</a></li>
+    <li role="none"><a href="//google.com" role="menuitem" tabindex="-1">Google</a></li>
+    <li role="none"><a href="//bing.com" role="menuitem" tabindex="-1">Bing</a></li>
+  </ul>
 </div>
   </div>
   <pre><code class="scss">

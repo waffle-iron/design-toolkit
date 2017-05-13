@@ -1,7 +1,7 @@
 # NYPL Digital Design Toolkit
 Design toolkit (SASS) for the NYPL Digital team
 
-[View documentation](http://nypl.github.io/design-toolkit/)
+## [View documentation](http://nypl.github.io/design-toolkit/)
 
 ## View documentation locally
 
@@ -14,9 +14,44 @@ Design toolkit (SASS) for the NYPL Digital team
 
 ## License
 
-See [LICENSE](LICENSE.md)
+See [LICENSE](LICENSE)
 
 ## CHANGE LOG
+
+### v0.1.13
+- Improved search results.
+- Improved item page.
+- Added design statement.
+- Searchable facets should default to open but close with JS.
+- Sorter docs complete.
+- Fixes: #76, #89, #87, #82, #94, #97, #100.
+
+### v0.1.12
+- Searchable facets now collapsible (#75)
+- Omni search spinner example added.
+- Added design of discovery homepage.
+- Revisiting the “Start over” pattern in a better, Github-inspired way. (#85)
+- Plus fixes issue #74.
+
+### v0.1.11
+- Crankin' it up to eleven!
+- Now with spinner fields! (#67)
+- Now with search results microformat. (#57)
+- Added green state to terms checkbox.
+- Fixed more minor stuff and issue #62 and also PRs: #64 #68 #69 #70 #71 #72 #73 #77 (and moar).
+
+### v0.1.10
+- Various fixes including: #59, #61.
+
+### v0.1.9
+- Added name field and docs.
+- Applying `1rem` value to inputs to avoid overrides.
+- Added some keyboard shortcuts to Sorting example.
+
+### v0.1.8
+- Form validation examples (including JS).
+- Search results documentation.
+- Some `aria-live` support included.
 
 ### v0.1.7
 - Font settings mixin.

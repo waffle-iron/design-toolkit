@@ -10,13 +10,95 @@ function onSampleCodeClick (t) {
   return s
 }
 
+function makeItSpin(who, input) {
+  $(who).toggleClass("spinning");
+  if (input) $(input).attr("disabled", "true").blur();
+  setTimeout(function () {
+    $(who).toggleClass("spinning")
+    if (input) $(input).removeAttr("disabled");
+  }, 2000)
+}
+
+function initSpinners() {
+  $(".nypl-omnisearch.nypl-spinner-field #nypl-omni-button1").click( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent(), self)
+  })
+  $(".nypl-omnisearch.nypl-spinner-field input[type=text]").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent(), self)
+  })
+  $(".nypl-text-field.nypl-spinner-field input").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent(), self)
+  })
+  $(".nypl-select-field.nypl-spinner-field select").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent(), self)
+  })
+  $(".nypl-alphabetical-filter.nypl-spinner-field button").click( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent().parent())
+  })
+  $(".nypl-radiobutton-field.nypl-spinner-field fieldset").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent().parent().parent(), self.parent().parent())
+  })
+  $(".nypl-searchable-field.nypl-spinner-field #subject-text2").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent().parent().parent())
+  })
+  $(".nypl-searchable-field.nypl-spinner-field fieldset").change( function(e) {
+    var self = $(e.target)
+    makeItSpin(self.parent().parent().parent().parent(), self.parent().parent().parent())
+  })
+}
+
 function init() {
+  initSpinners()
+  // close all facets
+  $("button.nypl-facet-toggle").each(function (i) {
+    closeFacet($(this))
+  })
+  $("button.nypl-facet-toggle").click(function (e) {
+    toggleFacet(e)
+  })
+  $("#checkbox-optin").change(function(e){
+    var checked = e.target.checked
+    if (checked) {
+      $(".nypl-terms-checkbox").addClass("checked")
+    } else {
+      $(".nypl-terms-checkbox").removeClass("checked")
+    }
+  })
+  $("#username1 #required-field").change(function (e) {
+    var self = $(e.target)
+    var text = self.val()
+    var regex = /\W/g
+    if (text.length > 0 && regex.test(text)) {
+      $("#username1").addClass("nypl-field-error")
+      $("#username1 .nypl-field-status").text("The Username must only contain letters and numbers. Try again.")
+    }
+  })
+  $("#email1 #email-field").change(function (e) {
+    var self = $(e.target)
+    var text = self.val()
+    var regex = /^[^@\s]+@[^@\s]+\.[^@\s]+/
+    if (!regex.test(text)) {
+      $("#email1").addClass("nypl-field-error")
+      $("#email1 .nypl-field-status").text("The Email address must use the correct formatting. Example: prudence@example.org. Try again.")
+    }
+  })
   $("code.html").on("click", onSampleCodeClick)
   $(".nypl-spinner-button").on("click touchend", function(e) {
     var self = $(e.target);
     self.toggleClass("spinning");
     self.blur();
     self.attr("disabled", "true");
+    setTimeout(function () {
+      self.toggleClass("spinning")
+      self.removeAttr("disabled");
+    }, 2000)
   })
   $(".nypl-mobile-refine button").click(function(e){
     e.preventDefault();
@@ -41,7 +123,6 @@ function init() {
     self.off("click")
   })
   $(".nypl-select-field.hidden").hide();
-  $('#date-of-birth').mask('00/00/0000');
   $("#step-2, #step-3").hide();
   $("#step-1_submit").click(function (e) {
     $("#step-2").show();
@@ -54,12 +135,12 @@ function init() {
     document.location = "#step-3";
   })
   $("#prev-2").click(function (e) {
-    console.log("1");
+    // console.log("1");
     $("#step-1").show();
     $("#step-2").hide();
   })
   $("#prev-3").click(function (e) {
-    console.log("2");
+    // console.log("2");
     $("#step-2").show();
     $("#step-3").hide();
   })
@@ -127,7 +208,7 @@ function init() {
 
   $(".select-box").on("change", function(e) {
     var id = $(e.target).attr("id");
-    console.log(id);
+    // console.log(id);
     var buttonid = "btn-apply_" + id;
     $("#"+buttonid).remove();
     if (id == "date") {
@@ -202,16 +283,11 @@ function init() {
     }
   })
 
-  $(".nypl-results-sorter button").on("click", function(e) {
-    e.preventDefault();
-    if ($(e.target).closest('.nypl-results-sorter').length) {
-      toggleSort()
-    }
-  })
+  initSort()
 
   $("input[name=available]").change(function() {
     var value = $("input[name=available]:checked").val()
-    console.log("hi");
+    // console.log("hi");
     if (value == "library") {
       $(".nypl-select-field.location").fadeIn(200)
     } else {
@@ -231,15 +307,97 @@ function init() {
 
 }
 
-function toggleSort() {
+function initSort() {
+  $(".nypl-results-sorter button").on("click", function(e) {
+    e.preventDefault();
+    if ($(e.target).closest('.nypl-results-sorter').length) {
+      toggleSort(e)
+    }
+  })
+
+  $(".nypl-results-sorter ul a").on("click", function(e) {
+    e.preventDefault();
+    var selection = $(e.target)
+    var text = selection.text()
+    $(".nypl-results-sorter ul a").removeClass("active") // deactivate all
+    selection.addClass("active")
+    $(".nypl-results-sorter button span").text(text) // set the text
+    toggleSort() //close it
+    $(".nypl-results-sorter button").focus()
+    // … should also apply the sorting stuff
+  })
+}
+
+function toggleSort(e) {
   var self = $(".nypl-results-sorter button")
+  var parent = self.parent()
+  var selected = 0
+  $(".nypl-results-sorter ul a").each(function (i) {
+    if ($(this).hasClass("active")) {
+      selected = i
+    }
+  })
+  var item_count = parent.find("li").length
   self.toggleClass("active").attr("aria-expanded", self.attr("aria-expanded") == "false" ? "true" : "false")
-  $(".nypl-results-sorter ul").toggleClass("hidden")
+  parent.find("ul").toggleClass("hidden")
+  if (self.attr("aria-expanded") == "true") {
+    parent.find("li a.active").focus()
+    parent.on("keydown", function (ee) {
+      switch (ee.keyCode) {
+        case 27: // ESC
+          parent.off("keydown")
+          parent.find("ul").addClass("hidden")
+          self.removeClass("active").attr("aria-expanded", "false").focus()
+          break
+        case 32: // SPACE
+          break
+        case 38: // UP
+          ee.preventDefault();
+          if (selected == 0) {
+            selected = item_count - 1;
+          } else {
+            selected--;
+          }
+          break
+        case 40: // DOWN
+          ee.preventDefault();
+          if (selected >= item_count - 1) {
+            selected = 0;
+          } else {
+            selected++;
+          }
+          break
+      }
+      parent.find("li:nth-child("+(selected+1)+") a").focus()
+    })
+  }
 }
 
 function hideSort() {
   $(".nypl-results-sorter button").removeClass("active").attr("aria-expanded", false)
   $(".nypl-results-sorter ul").addClass("hidden")
+}
+
+function closeFacet(facet) {
+  var button = facet
+  var facet = button.parent()
+  var collapsible = facet.find(".nypl-collapsible")
+  button.attr("aria-expanded", "false")
+  facet.attr("aria-expanded", "false")
+  collapsible.attr("aria-expanded", "false")
+  facet.addClass("collapsed")
+  collapsible.addClass("collapsed")
+}
+
+function toggleFacet(e) {
+  var button = $(e.target)
+  var facet = button.parent()
+  var collapsible = facet.find(".nypl-collapsible")
+  button.attr("aria-expanded", button.attr("aria-expanded") == "false" ? "true" : "false")
+  facet.attr("aria-expanded", facet.attr("aria-expanded") == "false" ? "true" : "false")
+  collapsible.attr("aria-expanded", collapsible.attr("aria-expanded") == "false" ? "true" : "false")
+  facet.toggleClass("collapsed")
+  collapsible.toggleClass("collapsed")
 }
 
 function toggleLogin() {

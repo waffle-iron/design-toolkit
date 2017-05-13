@@ -1,5 +1,5 @@
 ---
-title: Tables and data
+title: Tables And Data
 description: Displaying search results and tabular data.
 ---
 
@@ -7,15 +7,17 @@ description: Displaying search results and tabular data.
 
     <p>Use tables sparingly, <strong>only for tabular data</strong>. Use the <code>nypl-basic-table</code> class to format a table. All tables should have a <code>thead</code> element with the corresponding headers.</p>
 
+    <p class="nypl-a11y-note"><strong>Accessibility note:</strong> Make sure to include the <code>scope="col"</code> attribute to the headers.</p>
+
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
 <table class="nypl-basic-table">
   <thead>
     <tr>
-      <th>One</th>
-      <th>Two</th>
-      <th>Three</th>
-      <th>Four</th>
+      <th scope="col">One</th>
+      <th scope="col">Two</th>
+      <th scope="col">Three</th>
+      <th scope="col">Four</th>
     </tr>
   </thead>
   <tr>
@@ -45,10 +47,10 @@ description: Displaying search results and tabular data.
 &lt;table class=&quot;nypl-basic-table&quot;&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th&gt;One&lt;/th&gt;
-      &lt;th&gt;Two&lt;/th&gt;
-      &lt;th&gt;Three&lt;/th&gt;
-      &lt;th&gt;Four&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;One&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Two&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Three&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Four&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tr&gt;
@@ -72,9 +74,9 @@ description: Displaying search results and tabular data.
 &lt;/table&gt;
     </code></pre>
 
-    <h3 id="summary">Search results summary</h3>
+    <h3 id="summary">Search Results Summary</h3>
 
-    <p>Presents a comma-separated list of search terms or filters along with the number of results. The result count has a special <code>span</code> tag (should be number-formatted e.g.: 1,232). Each applied facet or term has a <code>button</code> element to remove the facet and refresh the search results. the button contains the screen-reader-friendly text inside a <code>span</code> tag.
+    <p>Presents a comma-separated list of search terms or filters along with the number of results. The result count has a special <code>span</code> tag (should be number-formatted e.g.: 1,232) of class <code>nypl-results-count</code>. Each applied facet or term is wrapped by a <code>strong</code> tag and has a <code>button</code> element to remove the facet and refresh the search results. The button contains the remove facet icon (the times “×” icon) as an SVG and the screen-reader-friendly text inside a <code>span</code> tag. A final <code>div</code> of class <code>nypl-clear-results</code> with an <code>nypl-link-button</code> will allow users to clear the current search and start over.
     </p>
 
     <p class="nypl-a11y-note"><strong>Accessibility note:</strong> The main element must include the following attributes when being updated via JavaScript (no page refresh): <code>aria-live="assertive"</code> <code>aria-atomic="true"</code> <code>role="presentation"</code>.</p>
@@ -87,34 +89,65 @@ description: Displaying search results and tabular data.
 <div class="nypl-results-summary" aria-live="assertive" aria-atomic="true" role="presentation">
   <span class="nypl-results-count">1,807</span> resources found for
   <span class="nypl-facet">
-    <strong>Young Adult<button><span>Remove Young Adult filter</span></button></strong>
+    Audience
+    <strong>Young Adult
+      <button>
+        <svg class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true"><title>times.icon</title><polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "/></svg>
+        <span>Remove Young Adult filter</span>
+      </button>
+    </strong>
   </span>,
   <span class="nypl-facet">
-    <strong>Fiction<button><span>Remove Fiction filter</span></button></strong>
+    Genre
+    <strong>Fiction
+      <button>
+        <svg class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 10 10" aria-hidden="true"><title>times.icon</title><polygon points="2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 "/></svg>
+        <span>Remove Fiction filter</span>
+      </button>
+    </strong>
   </span>.
+  <div class="nypl-clear-results">
+    <button class="nypl-link-button">Clear current search query, filters, and sorts</button>
+  </div>
 </div>
     </div>
     <pre><code class="scss">
 .nypl-results-summary
 .nypl-results-count
 .nypl-facet
+.nypl-clear-results
     </code></pre>
 
     <pre><code class="html">
 &lt;div class=&quot;nypl-results-summary&quot; aria-live=&quot;assertive&quot; aria-atomic=&quot;true&quot; role=&quot;presentation&quot;&gt;
   &lt;span class=&quot;nypl-results-count&quot;&gt;1,807&lt;/span&gt; resources found for
   &lt;span class=&quot;nypl-facet&quot;&gt;
-    &lt;strong&gt;Young Adult&lt;button&gt;&lt;span&gt;Remove Young Adult filter&lt;/span&gt;&lt;/button&gt;&lt;/strong&gt;
+    Audience
+    &lt;strong&gt;Young Adult
+      &lt;button&gt;
+        &lt;svg class=&quot;nypl-icon&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 10 10&quot; aria-hidden=&quot;true&quot;&gt;&lt;title&gt;times.icon&lt;/title&gt;&lt;polygon points=&quot;2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 &quot;/&gt;&lt;/svg&gt;
+        &lt;span&gt;Remove Young Adult filter&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/strong&gt;
   &lt;/span&gt;,
   &lt;span class=&quot;nypl-facet&quot;&gt;
-    &lt;strong&gt;Fiction&lt;button&gt;&lt;span&gt;Remove Fiction filter&lt;/span&gt;&lt;/button&gt;&lt;/strong&gt;
+    Genre
+    &lt;strong&gt;Fiction
+      &lt;button&gt;
+        &lt;svg class=&quot;nypl-icon&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 10 10&quot; aria-hidden=&quot;true&quot;&gt;&lt;title&gt;times.icon&lt;/title&gt;&lt;polygon points=&quot;2.3,6.8 3.2,7.7 5,5.9 6.8,7.7 7.7,6.8 5.9,5 7.7,3.2 6.8,2.3 5,4.1 3.2,2.3 2.3,3.2 4.1,5 &quot;/&gt;&lt;/svg&gt;
+        &lt;span&gt;Remove Fiction filter&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/strong&gt;
   &lt;/span&gt;.
-&lt;/div&gt;    </code></pre>
-
+  &lt;div class=&quot;nypl-clear-results&quot;&gt;
+    &lt;button class=&quot;nypl-link-button&quot;&gt;Clear current search query, filters, and sorts&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+    </code></pre>
 
     <h3 id="sorting">Sorting</h3>
 
-    <p>Sorters are nested inside a <code>nypl-results-sorting-controls</code> element. The sorters themselves implement a <code>nypl-results-sorter</code> microformat which is based on the <a href="buttons.html#navButton">Navigation Menu Button</a> and use the <code>aria-expanded</code> attribute that must be modified accordingly by the appropriate JavaScript (see the <a href="buttons.html#listButton">Navigation Menu Button documentation</a> for more details). The sorting options are nested in an unordered list with a menu role.</p>
+    <p>Sorters are nested inside a <code>nypl-results-sorting-controls</code> element. The sorters themselves implement a <code>nypl-results-sorter</code> microformat which is based on the <a href="buttons.html#navButton">Navigation Menu Button</a> and use the <code>aria-expanded</code> attribute that must be modified accordingly by the appropriate JavaScript (see the <a href="buttons.html#listButton">Navigation Menu Button documentation</a> for more details). The button also contains a <code>span</code> that displays the current sorting selection. The sorting options are nested in an unordered list with <code>role="menu"</code>. Individual link elements should have an <code>active</code> class when selected. The main button should be focused when the user makes a selection (see example jQuery below).</p>
 
 
     <div class="nypl-toolkit-example">
@@ -122,18 +155,18 @@ description: Displaying search results and tabular data.
 <div class="nypl-results-sorting-controls">
   <div class="nypl-results-sorter">
     <button aria-expanded="false">
-    Sort by <strong>relevance</strong>
+    Sort by <span>relevance</span>
       <svg aria-hidden="true" class="nypl-icon" preserveAspectRatio="xMidYMid meet" viewBox="0 0 68 24">
         <title>wedge down icon</title>
         <polygon points="67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0" />
       </svg>
     </button>
     <ul class="hidden" role="menu">
-      <li><a href="?sort=relevance"><strong>relevance</strong></a></li>
-      <li><a href="#">title A-Z</a></li>
-      <li><a href="#">title Z-A</a></li>
-      <li><a href="#">date (old to new)</a></li>
-      <li><a href="#">date (new to old)</a></li>
+      <li><a href="?sort=relevance" class="active">relevance</a></li>
+      <li><a href="?sort=A-Z">title A-Z</a></li>
+      <li><a href="?sort=Z-A">title Z-A</a></li>
+      <li><a href="?sort=old">date (old to new)</a></li>
+      <li><a href="?sort=new">date (new to old)</a></li>
     </ul>
   </div>
 </div>
@@ -141,52 +174,117 @@ description: Displaying search results and tabular data.
     <pre><code class="scss">
 .nypl-results-sorting-controls
 .nypl-results-sorter
+.active
     </code></pre>
 
     <pre><code class="html">
 &lt;div class=&quot;nypl-results-sorting-controls&quot;&gt;
   &lt;div class=&quot;nypl-results-sorter&quot;&gt;
     &lt;button aria-expanded=&quot;false&quot;&gt;
-    Sort by &lt;strong&gt;relevance&lt;/strong&gt;
+    Sort by &lt;span&gt;relevance&lt;/span&gt;
       &lt;svg aria-hidden=&quot;true&quot; class=&quot;nypl-icon&quot; preserveAspectRatio=&quot;xMidYMid meet&quot; viewBox=&quot;0 0 68 24&quot;&gt;
-        &lt;title&gt;wedge down&lt;/title&gt;
+        &lt;title&gt;wedge down icon&lt;/title&gt;
         &lt;polygon points=&quot;67.938 0 34 24 0 0 10 0 34.1 16.4 58.144 0 67.938 0&quot; /&gt;
       &lt;/svg&gt;
     &lt;/button&gt;
     &lt;ul class=&quot;hidden&quot; role=&quot;menu&quot;&gt;
-      &lt;li&gt;&lt;a href=&quot;?sort=relevance&quot;&gt;&lt;strong&gt;relevance&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;title A-Z&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;title Z-A&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;date (old to new)&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#&quot;&gt;date (new to old)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;?sort=relevance&quot; class=&quot;active&quot;&gt;relevance&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;?sort=A-Z&quot;&gt;title A-Z&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;?sort=Z-A&quot;&gt;title Z-A&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;?sort=old&quot;&gt;date (old to new)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;?sort=new&quot;&gt;date (new to old)&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
 &lt;/div&gt;
     </code></pre>
+    <pre><code class="js">
+initSort()
 
+function initSort() {
+  $(".nypl-results-sorter button").on("click", function(e) {
+    e.preventDefault();
+    if ($(e.target).closest('.nypl-results-sorter').length) {
+      toggleSort(e)
+    }
+  })
 
-    <h3 id="results-table">Search results (table)</h3>
+  $(".nypl-results-sorter ul a").on("click", function(e) {
+    e.preventDefault();
+    var selection = $(e.target)
+    var text = selection.text()
+    $(".nypl-results-sorter ul a").removeClass("active") // deactivate all
+    selection.addClass("active")
+    $(".nypl-results-sorter button span").text(text) // set the text
+    toggleSort() //close it
+    $(".nypl-results-sorter button").focus()
+    // … should also apply the sorting stuff
+  })
+}
 
-    <p>Coming soon.</p>
-
-    <div class="nypl-toolkit-example">
-      <span class="nypl-example-text">Example</span>
-
-    </div>
-    <pre><code class="scss">
+function toggleSort(e) {
+  var self = $(".nypl-results-sorter button")
+  var parent = self.parent()
+  var selected = 0
+  $(".nypl-results-sorter ul a").each(function (i) {
+    if ($(this).hasClass("active")) {
+      selected = i
+    }
+  })
+  var item_count = parent.find("li").length
+  self.toggleClass("active").attr("aria-expanded", self.attr("aria-expanded") == "false" ? "true" : "false")
+  parent.find("ul").toggleClass("hidden")
+  if (self.attr("aria-expanded") == "true") {
+    parent.find("li a.active").focus()
+    parent.on("keydown", function (ee) {
+      switch (ee.keyCode) {
+        case 27: // ESC
+          parent.off("keydown")
+          parent.find("ul").addClass("hidden")
+          self.removeClass("active").attr("aria-expanded", "false").focus()
+          break
+        case 32: // SPACE
+          break
+        case 38: // UP
+          ee.preventDefault();
+          if (selected == 0) {
+            selected = item_count - 1;
+          } else {
+            selected--;
+          }
+          break
+        case 40: // DOWN
+          ee.preventDefault();
+          if (selected >= item_count - 1) {
+            selected = 0;
+          } else {
+            selected++;
+          }
+          break
+      }
+      parent.find("li:nth-child("+(selected+1)+") a").focus()
+    })
+  }
+}
 
     </code></pre>
-    <pre><code class="html">
 
-    </code></pre>
-
-    <h3 id="results-nontable">Search results (non-table)</h3>
+    <h3 id="results-nontable">Search Results</h3>
 
     <p>Sometimes search results don't accommodate to a consistent structure or it is not useful to present them in table form. In these cases results should be returned in a unordered list (<code>ul</code>) of class <code>nypl-results-list</code>. Each result list item should have the class <code>nypl-results-item</code> and contain:
       <ul>
-        <li>An <code>h2</code> element that contains a link to the result page.</li>
+        <li>An <code>h2</code> element that contains a link to the result page with the <strong>item title</strong> and the <strong>item author</strong> (if available) separated by an <strong>en-dash</strong> (&ndash;, html: <code>&amp;ndash;</code>).</li>
         <li><strong>Optional:</strong> A notification of unavailability of the item (if applicable) in a div with class <code>nypl-results-unavailable</code>.</li>
         <li><strong>Optional:</strong> A definition list (<code>dl</code>) with the most relevant attributes of the result item sorted by importance. Terms that need to be highlighted (for easier scanning of results) should have a class of <code>nypl-results-highlight</code></li>
+        <li><strong>Optional:</strong> A div of class <code>nypl-results-item-description</code> with a series of <code>span</code> tags containing this information (when available) about the item <strong>in this order</strong>:
+          <ul>
+            <li>media (or material type), class <code>.nypl-results-media</code></li>
+            <li>place of publishing, class <code>.nypl-results-place</code></li>
+            <li>publisher, class <code>.nypl-results-publisher</code></li>
+            <li>date of publishing, class <code>.nypl-results-date</code></li>
+            <li>room(s) of access, class <code>.nypl-results-info</code></li>
+            <li>usage (for example: In-library use), class <code>.nypl-results-use</code></li>
+          </ul>
+        </li>
       </ul>
     </p>
 
@@ -195,28 +293,25 @@ description: Displaying search results and tabular data.
 <ul class="nypl-results-list">
   <!-- an item -->
   <li class="nypl-results-item">
-    <h2><a href="#">The Biography of Example</a></h2>
-    <dl>
-      <dt class="nypl-results-highlight">Material Type</dt>
-      <dd class="nypl-results-highlight">Text</dd>
-      <dt>Author</dt>
-      <dd>Smith, Angela F., 1982-</dd>
-      <dt>Published</dt>
-      <dd>2014</dd>
-    </dl>
+    <h2><a href="#">The Biography of Example &ndash; Smith, Angela F., 1982-</a></h2>
+    <div class="nypl-results-item-description">
+      <span class="nypl-results-media">Text</span>
+      <span class="nypl-results-place">New York</span>
+      <span class="nypl-results-date">2014</span>
+    </div>
   </li>
   <!-- another item -->
   <li class="nypl-results-item">
-    <h2><a href="#">Very Rare Item</a></h2>
+    <h2><a href="#">Very Rare Item &ndash; Casasbuenas Gutiérrez, Margarita, 1915-1997</a></h2>
     <div class="nypl-results-unavailable">Currently not available for use</div>
-    <dl>
-      <dt class="nypl-results-highlight">Material Type</dt>
-      <dd class="nypl-results-highlight">Text</dd>
-      <dt>Author</dt>
-      <dd>Casasbuenas Gutiérrez, Margarita, 1915-1997</dd>
-      <dt>Published</dt>
-      <dd>1942</dd>
-    </dl>
+    <div class="nypl-results-item-description">
+      <span class="nypl-results-media">Text</span>
+      <span class="nypl-results-place">Buenos Aires</span>
+      <span class="nypl-results-publisher">Editorial Planeta</span>
+      <span class="nypl-results-date">1972</span>
+      <span class="nypl-results-info">SASB - Rose Main Rdg Rm 315</span>
+      <span class="nypl-results-use">Item for In-library use</span>
+    </div>
   </li>
 </ul>
     </div>
@@ -224,41 +319,45 @@ description: Displaying search results and tabular data.
 .nypl-results-list
 .nypl-results-item
 .nypl-results-unavailable
-.nypl-results-highlight
+.nypl-results-media
+.nypl-results-place
+.nypl-results-publisher
+.nypl-results-date
+.nypl-results-info
+.nypl-results-use
     </code></pre>
     <pre><code class="html">
 &lt;ul class=&quot;nypl-results-list&quot;&gt;
   &lt;!-- an item --&gt;
   &lt;li class=&quot;nypl-results-item&quot;&gt;
-    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;The Biography of Example&lt;/a&gt;&lt;/h2&gt;
-    &lt;dl&gt;
-      &lt;dt class=&quot;nypl-results-highlight&quot;&gt;Material Type&lt;/dt&gt;
-      &lt;dd class=&quot;nypl-results-highlight&quot;&gt;Text&lt;/dd&gt;
-      &lt;dt&gt;Author&lt;/dt&gt;
-      &lt;dd&gt;Smith, Angela F., 1982-&lt;/dd&gt;
-      &lt;dt&gt;Published&lt;/dt&gt;
-      &lt;dd&gt;2014&lt;/dd&gt;
-    &lt;/dl&gt;
+    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;Smith, Angela F., 1982- &amp;ndash; The Biography of Example&lt;/a&gt;&lt;/h2&gt;
+    &lt;div class=&quot;nypl-results-item-description&quot;&gt;
+      &lt;span class=&quot;nypl-results-media&quot;&gt;Text&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-place&quot;&gt;New York&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-date&quot;&gt;2014&lt;/span&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
   &lt;!-- another item --&gt;
   &lt;li class=&quot;nypl-results-item&quot;&gt;
-    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;Very Rare Item&lt;/a&gt;&lt;/h2&gt;
+    &lt;h2&gt;&lt;a href=&quot;#&quot;&gt;Casasbuenas Guti&eacute;rrez, Margarita, 1915-1997 &amp;ndash; Very Rare Item&lt;/a&gt;&lt;/h2&gt;
     &lt;div class=&quot;nypl-results-unavailable&quot;&gt;Currently not available for use&lt;/div&gt;
-    &lt;dl&gt;
-      &lt;dt class=&quot;nypl-results-highlight&quot;&gt;Material Type&lt;/dt&gt;
-      &lt;dd class=&quot;nypl-results-highlight&quot;&gt;Text&lt;/dd&gt;
-      &lt;dt&gt;Author&lt;/dt&gt;
-      &lt;dd&gt;Casasbuenas Guti&eacute;rrez, Margarita, 1915-1997&lt;/dd&gt;
-      &lt;dt&gt;Published&lt;/dt&gt;
-      &lt;dd&gt;1942&lt;/dd&gt;
-    &lt;/dl&gt;
+    &lt;div class=&quot;nypl-results-item-description&quot;&gt;
+      &lt;span class=&quot;nypl-results-media&quot;&gt;Text&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-place&quot;&gt;Buenos Aires&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-publisher&quot;&gt;Editorial Planeta&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-date&quot;&gt;1972&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-info&quot;&gt;SASB - Rose Main Rdg Rm 315&lt;/span&gt;
+      &lt;span class=&quot;nypl-results-use&quot;&gt;Item for In-library use&lt;/span&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
     </code></pre>
 
-    <h3 id="pagination">Search results pagination</h3>
+    <h3 id="pagination">Search Results Pagination</h3>
 
-    <p>This widget is presented <strong>only in the bottom</strong> of the results (pagination will never appear on top). Page count appears in its own <code>span</code> tag.</p>
+    <p>This widget is presented <strong>only in the bottom</strong> of the results (pagination will never appear on top). Page count appears in its own <code>span</code> tag. The first and last pages should not display a first and last link, respectively.
+    </p>
+    <p><strong>Important:</strong> The first page <code>page-count</code> span should also have a class of <code>first</code> to properly center itself in the pagination.</p>
 
     <div class="nypl-toolkit-example">
       <span class="nypl-example-text">Example</span>
@@ -270,7 +369,7 @@ description: Displaying search results and tabular data.
     </svg>
     Previous page
   </a>
-  <span class="page-count">Page 2 of 4</span>
+  <span class="page-count">Page 2 of 404</span>
   <a href="/page/3" rel="next">
     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
 <title>Right arrow</title>
@@ -279,12 +378,34 @@ description: Displaying search results and tabular data.
     Next page
   </a>
 </div>
+
+<div class="nypl-results-pagination">
+  <span class="page-count first">Page 1 of 404</span>
+  <a href="/page/3" rel="next">
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
+<title>Right arrow</title>
+<polygon points="16.959 25.998 27.298 15.707 16.959 5.417 15.026 7.397 22.08 14.548 4.688 14.548 4.687 16.963 22.08 16.963 15.026 24.065 16.959 25.998" />
+    </svg>
+    Next page
+  </a>
+</div>
+
+<div class="nypl-results-pagination">
+  <a href="/page/1" rel="prev">
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 32 32">
+<title>Left arrow</title>
+<polygon points="16.959 24.065 9.905 16.963 27.298 16.963 27.298 14.548 9.905 14.548 16.959 7.397 15.026 5.417 4.688 15.707 15.026 25.998 16.959 24.065" />
+    </svg>
+    Previous page
+  </a>
+  <span class="page-count">Page 404 of 404</span>
+</div>
     </div>
     <pre><code class="scss">
 .nypl-results-pagination
     </code></pre>
     <pre><code class="html">
-&lt;div class=&quot;results-pagination&quot;&gt;
+&lt;div class=&quot;nypl-results-pagination&quot;&gt;
   &lt;a href=&quot;/page/1&quot; rel=&quot;prev&quot;&gt;
     &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 32 32&quot;&gt;
 &lt;title&gt;Left arrow&lt;/title&gt;
@@ -292,7 +413,7 @@ description: Displaying search results and tabular data.
     &lt;/svg&gt;
     Previous page
   &lt;/a&gt;
-  &lt;span class=&quot;page-count&quot;&gt;Page 2 of 4&lt;/span&gt;
+  &lt;span class=&quot;page-count&quot;&gt;Page 2 of 404&lt;/span&gt;
   &lt;a href=&quot;/page/3&quot; rel=&quot;next&quot;&gt;
     &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 32 32&quot;&gt;
 &lt;title&gt;Right arrow&lt;/title&gt;
@@ -300,5 +421,27 @@ description: Displaying search results and tabular data.
     &lt;/svg&gt;
     Next page
   &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;nypl-results-pagination&quot;&gt;
+  &lt;span class=&quot;page-count first&quot;&gt;Page 1 of 404&lt;/span&gt;
+  &lt;a href=&quot;/page/3&quot; rel=&quot;next&quot;&gt;
+    &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 32 32&quot;&gt;
+&lt;title&gt;Right arrow&lt;/title&gt;
+&lt;polygon points=&quot;16.959 25.998 27.298 15.707 16.959 5.417 15.026 7.397 22.08 14.548 4.688 14.548 4.687 16.963 22.08 16.963 15.026 24.065 16.959 25.998&quot; /&gt;
+    &lt;/svg&gt;
+    Next page
+  &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;nypl-results-pagination&quot;&gt;
+  &lt;a href=&quot;/page/1&quot; rel=&quot;prev&quot;&gt;
+    &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot; viewBox=&quot;0 0 32 32&quot;&gt;
+&lt;title&gt;Left arrow&lt;/title&gt;
+&lt;polygon points=&quot;16.959 24.065 9.905 16.963 27.298 16.963 27.298 14.548 9.905 14.548 16.959 7.397 15.026 5.417 4.688 15.707 15.026 25.998 16.959 24.065&quot; /&gt;
+    &lt;/svg&gt;
+    Previous page
+  &lt;/a&gt;
+  &lt;span class=&quot;page-count&quot;&gt;Page 404 of 404&lt;/span&gt;
 &lt;/div&gt;
     </code></pre>
