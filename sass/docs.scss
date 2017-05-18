@@ -1,6 +1,7 @@
 @import "general-mixins";
 @import "measurements";
 @import "colors";
+@import "typography";
 
 .hljs-selector-class {
   color: $highlight-color; // overriding highlightjs which has low contrast in css class highlighting
@@ -166,6 +167,8 @@ $colors: (
 
 textarea[name=code-area] {
   background: $nypl-light-gray;
+  font-family: $monospace-stack;
+  font-size: 0.8rem;
   margin-top: 0.5rem;
   width: 99.5%;
 }
