@@ -154,3 +154,8 @@ $colors: (
     text-align: center;
   }
 }
+
+// Work on the SVG Files
+textarea[name=code-area] {
+  background: $nypl-orange;
+}
