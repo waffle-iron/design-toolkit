@@ -144,7 +144,13 @@ h1 {
     padding-top: 1rem;
     text-align: center; }
 
+.nypl-toolkit-example .nypl-logo {
+  height: 14.08333rem;
+  width: 25rem; }
+
 textarea[name=code-area] {
-  background: #ffb81d; }
+  background: #d7d4d0;
+  margin-top: 0.5rem;
+  width: 99.5%; }
 
 /*# sourceMappingURL=docs.css.map */
