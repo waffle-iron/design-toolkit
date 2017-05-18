@@ -156,6 +156,16 @@ $colors: (
 }
 
 // Work on the SVG Files
+.nypl-toolkit-example {
+
+  .nypl-logo {
+    height: $logo-height * 5;
+    width: $logo-width * 5;
+  }
+}
+
 textarea[name=code-area] {
-  background: $nypl-orange;
+  background: $nypl-light-gray;
+  margin-top: 0.5rem;
+  width: 99.5%;
 }
