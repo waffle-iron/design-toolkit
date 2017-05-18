@@ -1,5 +1,5 @@
-<svg id="nyplLogoMain" viewBox="0 0 257 144" class="svgIcon nypl-icon nypl-logo">
-   <title>nypl.logo.markType.svg</title>
+<svg id="nyplLogoMain" preserveAspectRatio="xMidYMid" viewBox="0 0 257 144" class="nypl-icon nypl-logo" aria-lablelledby="lion-logo" aria-hidden="true">
+   <title id="lion-logo">New York Public Library</title>
    <g id="logo-type">
      <g id="New-York">
        <path d="M156.36639,26.64949h1.93408l14.21812,20.593v-20.593H174.381V50.5016h-1.82667L158.19274,29.76519V50.5016h-1.82635V26.64949Z" transform="translate(-27.25197 -24.7154)"/>
