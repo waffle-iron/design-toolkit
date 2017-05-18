@@ -150,6 +150,8 @@ h1 {
 
 textarea[name=code-area] {
   background: #d7d4d0;
+  font-family: "SFMono-Regular", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+  font-size: 0.8rem;
   margin-top: 0.5rem;
   width: 99.5%; }
 
