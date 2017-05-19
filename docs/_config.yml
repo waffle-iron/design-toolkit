@@ -6,6 +6,11 @@ defaults:
       path: ""
     values:
       layout: default
+  -
+    scope:
+      path: "icons"
+    values:
+      icon: true
 
 collections:
   sections:

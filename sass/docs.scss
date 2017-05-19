@@ -6,6 +6,10 @@
   color: $highlight-color; // overriding highlightjs which has low contrast in css class highlighting
 }
 
+.doc-icon {
+  width: 10rem;
+}
+
 #skip a {
   background-color: $nypl-white;
   border: 0;
