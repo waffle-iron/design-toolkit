@@ -1,15 +1,16 @@
 <h3>NYPL Logo</h3>
-<p>The NYPL branding / logos have special use cases. You'll probably have no need to modify the logo other than changing its size. We can use either the <em>logo mark</em> or the <em>logo type</em>. This can be achieved by using <code>css</code> to hide either of these two components of the logo mark.</p>
+<p>The NYPL branding / logos have special use cases. You'll probably have no need to modify the logo other than changing its size. We can use either the <em>logo mark</em> or the <em>logo type</em>. This can be achieved by using <code>css</code> to hide
+  either of these two components of the logo mark.</p>
 <div class="nypl-toolkit-example">
   <span class="nypl-example-text">Example</span>
   <!-- lets put the raw svg include here -->
-{% include rawSvg/logoLion.icon.svg %}
+  {% include rawSvg/logoLion.icon.svg %}
 </div>
 <textarea id="nypl-logoArea" name="code-area" rows="8" cols="40" class="xml">svg</textarea>
 <pre>
 <code class="scss">
     .nypl-icon {
-      @include nypl-icon($height: 10em, $width: 10em);
+    @include nypl-icon($height: 10em, $width: 10em);
     }
 </code></pre>
 <pre><code class="xml">
@@ -18,37 +19,37 @@
 </code></pre>
 
 <script type="text/javascript">
-// TODO: make this generic enough so the script will crawl down all the nodes and place their values into a the right containers
-const encodedSvg = document.getElementById('nyplLogoMain').outerHTML;
-//console.log(encodedSvg);
-// put the value of the svg into the text
-document.getElementById("nypl-logoArea").value = encodedSvg;
+  // TODO: make this generic enough so the script will crawl down all the nodes and place their values into a the right containers
+  const encodedSvg = document.getElementById('nyplLogoMain').outerHTML;
+  //console.log(encodedSvg);
+  // put the value of the svg into the text
+  document.getElementById("nypl-logoArea").value = encodedSvg;
 
-if(typeof escapeHtmlEntities == 'undefined') {
-  escapeHtmlEntities = function (text) {
-    return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
-      return '&' + (escapeHtmlEntities.entityTable[c.charCodeAt(0)] || '#'+c.charCodeAt(0)) + ';';
-        });
-      };
+  if (typeof escapeHtmlEntities == 'undefined') {
+    escapeHtmlEntities = function(text) {
+      return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
+        return '&' + (escapeHtmlEntities.entityTable[c.charCodeAt(0)] || '#' + c.charCodeAt(0)) + ';';
+      });
+    };
 
     // Partial List of HTML4 entities as defined here: http://www.w3.org/TR/html4/sgml/entities.html
     // added: amp, lt, gt, quot and apos
-      escapeHtmlEntities.entityTable = {
-        34 : 'quot',
-        38 : 'amp',
-        39 : 'apos',
-        60 : 'lt',
-        62 : 'gt',
-        160 : 'nbsp'
-      };
-    }
+    escapeHtmlEntities.entityTable = {
+      34: 'quot',
+      38: 'amp',
+      39: 'apos',
+      60: 'lt',
+      62: 'gt',
+      160: 'nbsp'
+    };
+  }
 
-// get the chunk of html and run the escaper
-// console.log(escapeHtmlEntities (encodedSvg));
-const theEncodedCode = escapeHtmlEntities(encodedSvg);
-// send the escaped output to the page:
-const insertEntity = document.querySelector('pre code.xml');
+  // get the chunk of html and run the escaper
+  // console.log(escapeHtmlEntities (encodedSvg));
+  const theEncodedCode = escapeHtmlEntities(encodedSvg);
+  // send the escaped output to the page:
+  const insertEntity = document.querySelector('pre code.xml');
 
-insertEntity.insertAdjacentHTML('afterbegin', theEncodedCode);
-//console.log(insertEntity);
+  insertEntity.insertAdjacentHTML('afterbegin', theEncodedCode);
+  //console.log(insertEntity);
 </script>

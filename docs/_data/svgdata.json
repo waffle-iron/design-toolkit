@@ -1,0 +1,20 @@
+{
+  "svg-meta": [
+    {
+      "title" : "NYPL Logo",
+      "usage" : "The NYPL branding / logos have special use cases. You'll probably have no need to modify the logo other than changing its size. We can use either the <em>logo mark</em> or the <em>logo type</em>. This can be achieved by using <code>css</code> to hide
+        either of these two components of the logo mark.",
+      "jekyll-template" : "{% include rawSvg/logoLion.icon.svg %}",
+      "scss-example" : [
+        {
+          "class" : ".nypl-icon",
+          "include" : "@include nypl-icon($height: 10em, $width: 10em);"
+        }
+      ]
+    },
+    {
+      "title" : "NYPL Logo Reversed",
+      "usage" : "Put all that junk in here.."
+    }
+  ]
+}
