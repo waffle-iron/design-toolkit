@@ -1,12 +1,12 @@
 ---
-title: SVG Usage Beta
-description: SVG icon usage.
+title: SVG Index
+description: SVG index of icons in production on nypl.org and in this toolkit.
 ---
 
 {% assign icon_files = site.static_files | where: "icon", true %}
 
 {% for icon in icon_files %}
-  [{{ icon.path }}]
+<h3>{{ icon.name }}</h3>
 <object data="{{ icon.path }}" type="image/svg+xml" class="doc-icon">
   <img src="{{ icon.path }}" />
 </object>
